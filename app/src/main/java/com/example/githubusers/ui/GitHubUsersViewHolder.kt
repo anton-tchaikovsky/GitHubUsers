@@ -2,7 +2,7 @@ package com.example.githubusers.ui
 
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import com.example.githubusers.data.GitHubUser
+import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.databinding.ItemGitHubUsersRecycleViewBinding
 
 class GitHubUsersViewHolder(private val binding: ItemGitHubUsersRecycleViewBinding):RecyclerView.ViewHolder(binding.root) {

@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.githubusers.data.GitHubUser
+import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.databinding.ItemGitHubUsersRecycleViewBinding
 
-class GitHubUsersAdapter(private var gitHubUsersList:List<GitHubUser>): RecyclerView.Adapter<GitHubUsersViewHolder>(){
+class GitHubUsersAdapter(private var gitHubUsersList:List<GitHubUser> = listOf()): RecyclerView.Adapter<GitHubUsersViewHolder>(){
 
     init {
         setHasStableIds(true)
@@ -29,5 +29,9 @@ class GitHubUsersAdapter(private var gitHubUsersList:List<GitHubUser>): Recycler
     }
 
     override fun getItemCount(): Int = gitHubUsersList.size
+
+    override fun getItemId(position: Int): Long {
+        return gitHubUsersList[position].id.toLong()
+    }
 
 }
