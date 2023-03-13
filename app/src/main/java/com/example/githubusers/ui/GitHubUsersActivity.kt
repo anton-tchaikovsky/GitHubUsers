@@ -25,7 +25,7 @@ class GitHubUsersActivity : AppCompatActivity(), GitHubUsersContract.GitHubUsers
         gitHubUsersPresenter = extractGitHubUsersPresenter()
             .also {
                 it.attach(this)
-                // it.onRequestGitHubUsers()
+                it.onRequestGitHubUsers()
             }
     }
 
