@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.databinding.ItemGitHubUsersRecycleViewBinding
 
-class GitHubUsersAdapter(private var gitHubUsersList:List<GitHubUser> = listOf()): RecyclerView.Adapter<GitHubUsersViewHolder>(){
+class GitHubUsersAdapter: RecyclerView.Adapter<GitHubUsersViewHolder>(){
+
+    private var gitHubUsersList:List<GitHubUser> = listOf()
 
     init {
         setHasStableIds(true)

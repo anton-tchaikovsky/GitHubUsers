@@ -11,7 +11,7 @@ import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.gitHubUserApp
 
 private lateinit var binding: ActivityGitHubUsersBinding
-private val gitHubUsersAdapter: GitHubUsersAdapter by lazy { GitHubUsersAdapter() }
+private lateinit var gitHubUsersAdapter:GitHubUsersAdapter
 private lateinit var gitHubUsersPresenter: GitHubUsersContract.GitHubUsersPresenter
 
 class GitHubUsersActivity : AppCompatActivity(), GitHubUsersContract.GitHubUsersView {
@@ -22,13 +22,18 @@ class GitHubUsersActivity : AppCompatActivity(), GitHubUsersContract.GitHubUsers
         initView()
         gitHubUsersPresenter = GitHubUsersPresenter(gitHubUserApp.gitHubUsersRepository).also {
             it.attach(this)
-            it.onRequestGitHubUsers()
+                // it.onRequestGitHubUsers()
         }
     }
 
     private fun initView() {
+        initLoadingIndicator()
         initRecycleView()
         initRefreshButton()
+    }
+
+    private fun initLoadingIndicator() {
+       showLoading(false)
     }
 
     private fun initRefreshButton() {
@@ -59,7 +64,9 @@ class GitHubUsersActivity : AppCompatActivity(), GitHubUsersContract.GitHubUsers
         binding.gitHubUsersRecyclerView.apply {
             layoutManager =
                 LinearLayoutManager(this@GitHubUsersActivity, RecyclerView.VERTICAL, false)
-            adapter = gitHubUsersAdapter
+            gitHubUsersAdapter = GitHubUsersAdapter().also {
+                adapter = it
+            }
         }
     }
 
