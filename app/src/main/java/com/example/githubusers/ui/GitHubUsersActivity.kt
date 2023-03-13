@@ -5,12 +5,9 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.githubusers.data.api.RemoteDataSourceGitHubUsers
 import com.example.githubusers.databinding.ActivityGitHubUsersBinding
 import com.example.githubusers.domain.dto.GitHubUser
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.githubusers.gitHubUserApp
 
 private lateinit var binding: ActivityGitHubUsersBinding
 private lateinit var gitHubUsersAdapter: GitHubUsersAdapter
@@ -39,23 +36,12 @@ class GitHubUsersActivity : AppCompatActivity() {
         gitHubUsersAdapter.updateGitHubUsersList(gitHubUsers)
     }
 
+    private fun showError(error: Throwable) {
+        Log.v("@@@", error.message.toString())
+    }
+
     private fun loadGitHubUsers() {
-        RemoteDataSourceGitHubUsers().callAPIGitHubUsers(object : Callback<List<GitHubUser>> {
-            override fun onResponse(
-                call: Call<List<GitHubUser>>,
-                response: Response<List<GitHubUser>>
-            ) {
-                if (response.isSuccessful && response.body() != null)
-                    gitHubUsersAdapter.updateGitHubUsersList(response.body() as List<GitHubUser>)
-                else
-                    Log.v("@@@", "error")
-            }
-
-            override fun onFailure(call: Call<List<GitHubUser>>, t: Throwable) {
-                Log.v("@@@", t.message.toString())
-            }
-
-        })
+        gitHubUserApp.gitHubUsersRepository.getGitHubUsers(::showGitHubUsers, ::showError)
     }
 
     private fun initRecycleView() {
