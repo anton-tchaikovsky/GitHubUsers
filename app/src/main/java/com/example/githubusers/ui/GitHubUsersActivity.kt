@@ -14,32 +14,29 @@ private lateinit var binding: ActivityGitHubUsersBinding
 private lateinit var gitHubUsersAdapter:GitHubUsersAdapter
 private lateinit var gitHubUsersPresenter: GitHubUsersContract.GitHubUsersPresenter
 
+@Suppress("DEPRECATION")
 class GitHubUsersActivity : AppCompatActivity(), GitHubUsersContract.GitHubUsersView {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGitHubUsersBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initView()
-        gitHubUsersPresenter = GitHubUsersPresenter(gitHubUserApp.gitHubUsersRepository).also {
-            it.attach(this)
+        gitHubUsersPresenter = extractGitHubUsersPresenter()
+            .also {
+                it.attach(this)
                 // it.onRequestGitHubUsers()
-        }
+            }
     }
 
-    private fun initView() {
-        initLoadingIndicator()
-        initRecycleView()
-        initRefreshButton()
+    @Deprecated("Deprecated in Java")
+    override fun onRetainCustomNonConfigurationInstance(): GitHubUsersContract.GitHubUsersPresenter {
+        return gitHubUsersPresenter
     }
 
-    private fun initLoadingIndicator() {
-       showLoading(false)
-    }
-
-    private fun initRefreshButton() {
-        binding.refreshButton.setOnClickListener {
-            gitHubUsersPresenter.onRequestGitHubUsers()
-        }
+    override fun onDestroy() {
+        gitHubUsersPresenter.detach()
+        super.onDestroy()
     }
 
     override fun showGitHubUsers(gitHubUsers: List<GitHubUser>) {
@@ -60,6 +57,26 @@ class GitHubUsersActivity : AppCompatActivity(), GitHubUsersContract.GitHubUsers
         }
     }
 
+    private fun extractGitHubUsersPresenter(): GitHubUsersContract.GitHubUsersPresenter =
+        lastCustomNonConfigurationInstance as? GitHubUsersContract.GitHubUsersPresenter
+            ?: GitHubUsersPresenter(gitHubUserApp.gitHubUsersRepository)
+
+    private fun initView() {
+        initLoadingIndicator()
+        initRecycleView()
+        initRefreshButton()
+    }
+
+    private fun initLoadingIndicator() {
+        showLoading(false)
+    }
+
+    private fun initRefreshButton() {
+        binding.refreshButton.setOnClickListener {
+            gitHubUsersPresenter.onRequestGitHubUsers()
+        }
+    }
+
     private fun initRecycleView() {
         binding.gitHubUsersRecyclerView.apply {
             layoutManager =
@@ -70,8 +87,4 @@ class GitHubUsersActivity : AppCompatActivity(), GitHubUsersContract.GitHubUsers
         }
     }
 
-    override fun onDestroy() {
-        gitHubUsersPresenter.detach()
-        super.onDestroy()
-    }
 }
