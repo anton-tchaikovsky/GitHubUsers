@@ -3,40 +3,26 @@ package com.example.githubusers.ui
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubusers.databinding.ActivityGitHubUsersBinding
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.gitHubUserApp
+import moxy.MvpAppCompatActivity
+import moxy.ktx.moxyPresenter
 
-private lateinit var binding: ActivityGitHubUsersBinding
-private lateinit var gitHubUsersAdapter:GitHubUsersAdapter
-private lateinit var gitHubUsersPresenter: GitHubUsersContract.GitHubUsersPresenter
+class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
 
-@Suppress("DEPRECATION")
-class GitHubUsersActivity : AppCompatActivity(), GitHubUsersContract.GitHubUsersView {
+    private lateinit var binding: ActivityGitHubUsersBinding
+    private val gitHubUsersAdapter by lazy { GitHubUsersAdapter() }
+    private val gitHubUsersPresenter by moxyPresenter { GitHubUsersPresenter(gitHubUserApp.gitHubUsersRepository) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGitHubUsersBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initView()
-        gitHubUsersPresenter = extractGitHubUsersPresenter()
-            .also {
-                it.attach(this)
-                it.onRequestGitHubUsers()
-            }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onRetainCustomNonConfigurationInstance(): GitHubUsersContract.GitHubUsersPresenter {
-        return gitHubUsersPresenter
-    }
-
-    override fun onDestroy() {
-        gitHubUsersPresenter.detach()
-        super.onDestroy()
+        //gitHubUsersPresenter.onRequestGitHubUsers()
     }
 
     override fun showGitHubUsers(gitHubUsers: List<GitHubUser>) {
@@ -56,10 +42,6 @@ class GitHubUsersActivity : AppCompatActivity(), GitHubUsersContract.GitHubUsers
             binding.loadingIndicator.visibility = View.GONE
         }
     }
-
-    private fun extractGitHubUsersPresenter(): GitHubUsersContract.GitHubUsersPresenter =
-        lastCustomNonConfigurationInstance as? GitHubUsersContract.GitHubUsersPresenter
-            ?: GitHubUsersPresenter(gitHubUserApp.gitHubUsersRepository)
 
     private fun initView() {
         initLoadingIndicator()
@@ -81,9 +63,7 @@ class GitHubUsersActivity : AppCompatActivity(), GitHubUsersContract.GitHubUsers
         binding.gitHubUsersRecyclerView.apply {
             layoutManager =
                 LinearLayoutManager(this@GitHubUsersActivity, RecyclerView.VERTICAL, false)
-            gitHubUsersAdapter = GitHubUsersAdapter().also {
-                adapter = it
-            }
+            adapter = gitHubUsersAdapter
         }
     }
 

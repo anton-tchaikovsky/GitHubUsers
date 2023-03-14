@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -47,4 +48,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     //Coil
     implementation 'io.coil-kt:coil:0.11.0'
+    //Moxy
+    implementation "com.github.moxy-community:moxy:2.2.2"
+    kapt "com.github.moxy-community:moxy-compiler:2.2.2"
+    implementation "com.github.moxy-community:moxy-ktx:2.2.2"
+    implementation "com.github.moxy-community:moxy-androidx:2.2.2"
 }
