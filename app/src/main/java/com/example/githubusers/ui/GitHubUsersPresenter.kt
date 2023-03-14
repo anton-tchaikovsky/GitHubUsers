@@ -6,20 +6,26 @@ import moxy.MvpPresenter
 class GitHubUsersPresenter(private val gitHubUsersRepository: GitHubUsersRepository) :
     MvpPresenter<GitHubUsersView>() {
 
+    override fun onFirstViewAttach() {
+        loadGitHubUsers()
+        super.onFirstViewAttach()
+    }
+
     fun onRequestGitHubUsers() {
         loadGitHubUsers()
     }
 
     private fun loadGitHubUsers() {
         viewState.run {
-            showLoading(true)
+            showLoading()
             gitHubUsersRepository.getGitHubUsers(
                 onSuccess = {
-                    showLoading(false)
+                    showAnimateGitHubUsers()
+                    hideLoading()
                     showGitHubUsers(it)
                 },
                 onError = {
-                    showLoading(false)
+                    hideLoading()
                     showError(it)
                 }
             )

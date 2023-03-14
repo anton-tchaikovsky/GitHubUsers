@@ -11,5 +11,7 @@ interface GitHubUsersView:MvpView{
     fun showGitHubUsers(gitHubUsers: List<GitHubUser>)
     @StateStrategyType(SkipStrategy::class)
     fun showError(error: Throwable)
-    fun showLoading(isShowLoading: Boolean)
+    fun showLoading()
+    fun hideLoading()
+    fun showAnimateGitHubUsers()
 }

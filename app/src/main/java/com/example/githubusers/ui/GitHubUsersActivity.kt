@@ -1,13 +1,18 @@
 package com.example.githubusers.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
 import com.example.githubusers.databinding.ActivityGitHubUsersBinding
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.gitHubUserApp
+import com.example.githubusers.utils.DURATION_FADE_IN_GIT_HUB_USERS
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 
@@ -22,7 +27,6 @@ class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
         binding = ActivityGitHubUsersBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initView()
-        //gitHubUsersPresenter.onRequestGitHubUsers()
     }
 
     override fun showGitHubUsers(gitHubUsers: List<GitHubUser>) {
@@ -33,14 +37,22 @@ class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
         Toast.makeText(this, error.message.toString(), Toast.LENGTH_LONG).show()
     }
 
-    override fun showLoading(isShowLoading: Boolean) {
-        if (isShowLoading) {
-            binding.gitHubUsersRecyclerView.visibility = View.GONE
-            binding.loadingIndicator.visibility = View.VISIBLE
-        } else {
-            binding.gitHubUsersRecyclerView.visibility = View.VISIBLE
-            binding.loadingIndicator.visibility = View.GONE
+    override fun showLoading() {
+        binding.gitHubUsersRecyclerView.visibility = View.GONE
+        binding.loadingIndicator.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        binding.gitHubUsersRecyclerView.visibility = View.VISIBLE
+        binding.loadingIndicator.visibility = View.GONE
+    }
+
+    override fun showAnimateGitHubUsers() {
+        Log.v("@@@", binding.gitHubUsersRecyclerView.isVisible.toString())
+        val transition = Fade(Fade.IN).apply {
+            duration = DURATION_FADE_IN_GIT_HUB_USERS
         }
+        TransitionManager.beginDelayedTransition(binding.gitHubUsersContainer, transition)
     }
 
     private fun initView() {
@@ -50,7 +62,7 @@ class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
     }
 
     private fun initLoadingIndicator() {
-        showLoading(false)
+        hideLoading()
     }
 
     private fun initRefreshButton() {
