@@ -1,25 +1,15 @@
 package com.example.githubusers.ui
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.databinding.ItemGitHubUsersRecycleViewBinding
 
-class GitHubUsersAdapter: RecyclerView.Adapter<GitHubUsersViewHolder>(){
-
-    private var gitHubUsersList:List<GitHubUser> = listOf()
+class GitHubUsersAdapter(private val itemGitHubUsersPresenter: ItemGitHubUsersPresenter): RecyclerView.Adapter<GitHubUsersViewHolder>(){
 
     init {
         setHasStableIds(true)
     }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateGitHubUsersList(newGitHubUsersList:List<GitHubUser>){
-       gitHubUsersList = newGitHubUsersList
-       notifyDataSetChanged()
-   }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GitHubUsersViewHolder {
         val binding = ItemGitHubUsersRecycleViewBinding.inflate(LayoutInflater.from(parent.context), parent, false )
@@ -27,13 +17,11 @@ class GitHubUsersAdapter: RecyclerView.Adapter<GitHubUsersViewHolder>(){
     }
 
     override fun onBindViewHolder(holder: GitHubUsersViewHolder, position: Int) {
-        holder.bind(gitHubUsersList[position])
+        itemGitHubUsersPresenter.bindView(holder, position)
     }
 
-    override fun getItemCount(): Int = gitHubUsersList.size
+    override fun getItemCount(): Int = itemGitHubUsersPresenter.getCount()
 
-    override fun getItemId(position: Int): Long {
-        return gitHubUsersList[position].id.toLong()
-    }
+    override fun getItemId(position: Int) = itemGitHubUsersPresenter.getId(position).toLong()
 
 }

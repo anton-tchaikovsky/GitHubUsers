@@ -1,5 +1,6 @@
 package com.example.githubusers.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.example.githubusers.databinding.ActivityGitHubUsersBinding
-import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.gitHubUserApp
 import com.example.githubusers.utils.DURATION_FADE_IN_GIT_HUB_USERS
 import moxy.MvpAppCompatActivity
@@ -19,18 +19,18 @@ import moxy.ktx.moxyPresenter
 class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
 
     private lateinit var binding: ActivityGitHubUsersBinding
-    private val gitHubUsersAdapter by lazy { GitHubUsersAdapter() }
     private val gitHubUsersPresenter by moxyPresenter { GitHubUsersPresenter(gitHubUserApp.gitHubUsersRepository) }
+    private val gitHubUsersAdapter by lazy { GitHubUsersAdapter(gitHubUsersPresenter.itemGitHubUsersPresenter) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGitHubUsersBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initView()
     }
 
-    override fun showGitHubUsers(gitHubUsers: List<GitHubUser>) {
-        gitHubUsersAdapter.updateGitHubUsersList(gitHubUsers)
+    @SuppressLint("NotifyDataSetChanged")
+    override fun showGitHubUsers() {
+        gitHubUsersAdapter.notifyDataSetChanged()
     }
 
     override fun showError(error: Throwable) {
@@ -55,7 +55,7 @@ class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
         TransitionManager.beginDelayedTransition(binding.gitHubUsersContainer, transition)
     }
 
-    private fun initView() {
+    override fun initView() {
         initLoadingIndicator()
         initRecycleView()
         initRefreshButton()
