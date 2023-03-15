@@ -4,9 +4,11 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.example.githubusers.databinding.ItemGitHubUsersRecycleViewBinding
 
-class GitHubUsersViewHolder
+class ItemGitHubUsersViewHolder
     (private val binding: ItemGitHubUsersRecycleViewBinding):
     RecyclerView.ViewHolder(binding.root), ItemGitHubUsersView {
+
+    override var itemPosition: Int? = null
 
     override fun showAvatar(url: String) {
         binding.gitHubUsersAvatarImageView.load(url)
@@ -19,4 +21,11 @@ class GitHubUsersViewHolder
     override fun showId(id: Int) {
         binding.gitHubUserId.text = id.toString()
     }
+
+    override fun setItemGitHubUsersClickListener(itemGitHubUsersClickListener:((ItemGitHubUsersView)->Unit)){
+        itemView.setOnClickListener {
+            itemGitHubUsersClickListener(this@ItemGitHubUsersViewHolder)
+        }
+    }
+
 }

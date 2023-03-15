@@ -29,6 +29,9 @@ class GitHubUsersPresenter(private val gitHubUsersRepository: GitHubUsersReposit
                     showAnimateGitHubUsers()
                     hideLoading()
                     showGitHubUsers()
+                    itemGitHubUsersPresenter.itemGitHubUsersClickListener = {
+                        showItemGitHubUsers(itemGitHubUsersPresenter.gitHubUsersList[it.itemPosition!!].login)
+                    }
                 },
                 onError = {
                     hideLoading()

@@ -2,10 +2,8 @@ package com.example.githubusers.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
@@ -33,6 +31,10 @@ class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
         gitHubUsersAdapter.notifyDataSetChanged()
     }
 
+    override fun showItemGitHubUsers(login: String) {
+        Toast.makeText(this, login, Toast.LENGTH_SHORT).show()
+    }
+
     override fun showError(error: Throwable) {
         Toast.makeText(this, error.message.toString(), Toast.LENGTH_LONG).show()
     }
@@ -48,7 +50,6 @@ class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
     }
 
     override fun showAnimateGitHubUsers() {
-        Log.v("@@@", binding.gitHubUsersRecyclerView.isVisible.toString())
         val transition = Fade(Fade.IN).apply {
             duration = DURATION_FADE_IN_GIT_HUB_USERS
         }
