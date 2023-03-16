@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".ui.avatar_git_hub_user.AvatarGitHubUserFragment"
+    >
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/git_hub_users_large_avatar_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/git_hub_user_large_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin_git_hub_user_large_login"
+        android:textSize="@dimen/text_size__git_hub_user_large_login"
+        android:textColor="@android:color/white"
+        android:background="@android:color/black"
+        android:padding="@dimen/padding_git_hub_user_large_login"
+        tools:text="login"/>
+
+</FrameLayout>

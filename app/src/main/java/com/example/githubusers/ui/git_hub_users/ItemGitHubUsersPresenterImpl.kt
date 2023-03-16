@@ -1,8 +1,9 @@
-package com.example.githubusers.ui
+package com.example.githubusers.ui.git_hub_users
 
 import com.example.githubusers.domain.dto.GitHubUser
 
-class ItemGitHubPresenterImpl(override val gitHubUsersList: MutableList<GitHubUser> = mutableListOf()): ItemGitHubUsersPresenter {
+class ItemGitHubUsersPresenterImpl(override val gitHubUsersList: MutableList<GitHubUser> = mutableListOf()):
+    ItemGitHubUsersPresenter {
 
     override var itemGitHubUsersClickListener: ((ItemGitHubUsersView) -> Unit)? = null
 

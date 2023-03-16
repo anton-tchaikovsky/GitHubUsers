@@ -1,4 +1,4 @@
-package com.example.githubusers.ui
+package com.example.githubusers.ui.git_hub_users
 
 interface ItemGitHubUsersView {
     var itemPosition: Int?

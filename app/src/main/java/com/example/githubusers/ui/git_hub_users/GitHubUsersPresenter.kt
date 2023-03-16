@@ -1,12 +1,14 @@
-package com.example.githubusers.ui
+package com.example.githubusers.ui.git_hub_users
 
 import com.example.githubusers.domain.repository.GitHubUsersRepository
+import com.github.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.Screen
 import moxy.MvpPresenter
 
-class GitHubUsersPresenter(private val gitHubUsersRepository: GitHubUsersRepository) :
+class GitHubUsersPresenter(private val gitHubUsersRepository: GitHubUsersRepository, private val router: Router) :
     MvpPresenter<GitHubUsersView>() {
 
-    val itemGitHubUsersPresenter: ItemGitHubUsersPresenter = ItemGitHubPresenterImpl()
+    val itemGitHubUsersPresenter: ItemGitHubUsersPresenter = ItemGitHubUsersPresenterImpl()
 
     override fun onFirstViewAttach() {
         viewState.initView()
@@ -15,6 +17,14 @@ class GitHubUsersPresenter(private val gitHubUsersRepository: GitHubUsersReposit
 
     fun onRequestGitHubUsers() {
         loadGitHubUsers()
+    }
+
+    fun onOpenItemGitHubUsersFragment(screenItemGitHubUsers: Screen){
+        router.navigateTo(screenItemGitHubUsers)
+    }
+
+    fun onBackPressed(){
+        router.exit()
     }
 
     private fun loadGitHubUsers() {
@@ -30,7 +40,9 @@ class GitHubUsersPresenter(private val gitHubUsersRepository: GitHubUsersReposit
                     hideLoading()
                     showGitHubUsers()
                     itemGitHubUsersPresenter.itemGitHubUsersClickListener = {
-                        showItemGitHubUsers(itemGitHubUsersPresenter.gitHubUsersList[it.itemPosition!!].login)
+                        itemGitHubUsersPresenter.gitHubUsersList[it.itemPosition!!].run {
+                            showItemGitHubUsers(login, avatarUrl)
+                        }
                     }
                 },
                 onError = {

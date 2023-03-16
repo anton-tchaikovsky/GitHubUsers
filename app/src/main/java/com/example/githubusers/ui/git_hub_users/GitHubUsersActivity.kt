@@ -1,4 +1,4 @@
-package com.example.githubusers.ui
+package com.example.githubusers.ui.git_hub_users
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,22 +8,38 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
+import com.example.githubusers.R
 import com.example.githubusers.databinding.ActivityGitHubUsersBinding
 import com.example.githubusers.gitHubUserApp
+import com.example.githubusers.ui.avatar_git_hub_user.AvatarGitHubUserFragment
 import com.example.githubusers.utils.DURATION_FADE_IN_GIT_HUB_USERS
+import com.github.terrakok.cicerone.Navigator
+import com.github.terrakok.cicerone.androidx.AppNavigator
+import com.github.terrakok.cicerone.androidx.FragmentScreen
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 
 class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
 
     private lateinit var binding: ActivityGitHubUsersBinding
-    private val gitHubUsersPresenter by moxyPresenter { GitHubUsersPresenter(gitHubUserApp.gitHubUsersRepository) }
+    private val gitHubUsersPresenter by moxyPresenter { GitHubUsersPresenter(gitHubUserApp.gitHubUsersRepository, gitHubUserApp.router) }
     private val gitHubUsersAdapter by lazy { GitHubUsersAdapter(gitHubUsersPresenter.itemGitHubUsersPresenter) }
+    private val navigator:Navigator = AppNavigator(this, R.id.git_hub_users_container)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+        override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGitHubUsersBinding.inflate(layoutInflater)
         setContentView(binding.root)
+    }
+
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        gitHubUserApp.navigatorHolder.setNavigator(navigator)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        gitHubUserApp.navigatorHolder.removeNavigator()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -31,8 +47,8 @@ class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
         gitHubUsersAdapter.notifyDataSetChanged()
     }
 
-    override fun showItemGitHubUsers(login: String) {
-        Toast.makeText(this, login, Toast.LENGTH_SHORT).show()
+    override fun showItemGitHubUsers(login: String, avatarUrl: String) {
+        gitHubUsersPresenter.onOpenItemGitHubUsersFragment(FragmentScreen { AvatarGitHubUserFragment.newInstance (login, avatarUrl)} )
     }
 
     override fun showError(error: Throwable) {

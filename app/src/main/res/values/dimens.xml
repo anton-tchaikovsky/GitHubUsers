@@ -5,4 +5,8 @@
     <dimen name="margin_git_hub_users_recycle_view">4dp</dimen>
     <dimen name="width_git_hub_user_avatar_image_view">150dp</dimen>
     <dimen name="height_git_hub_user_avatar_image_view">150dp</dimen>
+    <dimen name="margin_git_hub_user_large_login">36dp</dimen>
+    <dimen name="text_size__git_hub_user_large_login">24sp</dimen>
+    <dimen name="padding_git_hub_user_large_login">4dp</dimen>
+
 </resources>
