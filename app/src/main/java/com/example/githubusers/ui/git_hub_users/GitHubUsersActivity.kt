@@ -11,18 +11,16 @@ import androidx.transition.TransitionManager
 import com.example.githubusers.R
 import com.example.githubusers.databinding.ActivityGitHubUsersBinding
 import com.example.githubusers.gitHubUserApp
-import com.example.githubusers.ui.avatar_git_hub_user.AvatarGitHubUserFragment
 import com.example.githubusers.utils.DURATION_FADE_IN_GIT_HUB_USERS
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.androidx.AppNavigator
-import com.github.terrakok.cicerone.androidx.FragmentScreen
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 
 class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
 
     private lateinit var binding: ActivityGitHubUsersBinding
-    private val gitHubUsersPresenter by moxyPresenter { GitHubUsersPresenter(gitHubUserApp.gitHubUsersRepository, gitHubUserApp.router) }
+    private val gitHubUsersPresenter by moxyPresenter { GitHubUsersPresenter(gitHubUserApp.gitHubUsersRepository, gitHubUserApp.router, GitHubUsersAppScreensImpl()) }
     private val gitHubUsersAdapter by lazy { GitHubUsersAdapter(gitHubUsersPresenter.itemGitHubUsersPresenter) }
     private val navigator:Navigator = AppNavigator(this, R.id.git_hub_users_container)
 
@@ -45,10 +43,6 @@ class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
     @SuppressLint("NotifyDataSetChanged")
     override fun showGitHubUsers() {
         gitHubUsersAdapter.notifyDataSetChanged()
-    }
-
-    override fun showItemGitHubUsers(login: String, avatarUrl: String) {
-        gitHubUsersPresenter.onOpenItemGitHubUsersFragment(FragmentScreen { AvatarGitHubUserFragment.newInstance (login, avatarUrl)} )
     }
 
     override fun showError(error: Throwable) {

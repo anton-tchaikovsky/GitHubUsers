@@ -10,8 +10,6 @@ interface GitHubUsersView:MvpView{
     fun initView()
     fun showGitHubUsers()
     @StateStrategyType(SkipStrategy::class)
-    fun showItemGitHubUsers(login: String, avatarUrl: String)
-    @StateStrategyType(SkipStrategy::class)
     fun showError(error: Throwable)
     fun showLoading()
     fun hideLoading()
