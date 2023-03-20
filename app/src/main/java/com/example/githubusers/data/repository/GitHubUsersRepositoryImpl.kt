@@ -33,17 +33,22 @@ class GitHubUsersRepositoryImpl:GitHubUsersRepository {
         })
     }
 
-    override fun getObservableGitHubUsers(interval: Long): Observable<List<GitHubUser>> {
-        return when (interval) {
-            0L -> Observable.just(listOf(DEFAULT_GIT_HAB_USERS_LIST[0]))
-            1L -> Observable.just(listOf(DEFAULT_GIT_HAB_USERS_LIST[0], DEFAULT_GIT_HAB_USERS_LIST[1]))
-            2L -> Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
-            else -> Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
-        }
-    }
-
-    override fun getObservableInterval(): Observable<Long> {
-        return Observable.interval(2, TimeUnit.SECONDS)
+    override fun getDefaultGitHubUsers(): Observable<List<GitHubUser>> {
+        return Observable.intervalRange(0, 3, 0, 2, TimeUnit.SECONDS)
+            .flatMap {
+                return@flatMap when (it) {
+                    0L -> Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
+                        .map { defaultGitHubUsersList ->
+                            listOf(defaultGitHubUsersList[0])
+                        }
+                    1L -> Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
+                        .map { defaultGitHubUsersList ->
+                            listOf(defaultGitHubUsersList[0], defaultGitHubUsersList[1])
+                        }
+                    2L -> Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
+                    else -> Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
+                }
+            }
     }
 
 }
