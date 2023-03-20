@@ -9,5 +9,7 @@ interface GitHubUsersRepository {
         onError: ((Throwable) -> Unit)? = null
     )
 
-    fun getObservable(): Observable<List<GitHubUser>>
+    fun getObservableGitHubUsers(interval: Long): Observable<List<GitHubUser>>
+
+    fun getObservableInterval():Observable<Long>
 }

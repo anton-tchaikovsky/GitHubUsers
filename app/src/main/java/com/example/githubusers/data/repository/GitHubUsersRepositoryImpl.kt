@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.core.Observable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.TimeUnit
 
 class GitHubUsersRepositoryImpl:GitHubUsersRepository {
 
@@ -25,14 +26,24 @@ class GitHubUsersRepositoryImpl:GitHubUsersRepository {
                 else
                     onError?.invoke(IllegalStateException())
             }
+
             override fun onFailure(call: Call<List<GitHubUser>>, t: Throwable) {
                 onError?.invoke(t)
             }
         })
     }
 
-   override fun getObservable(): Observable<List<GitHubUser>> {
-        return Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
+    override fun getObservableGitHubUsers(interval: Long): Observable<List<GitHubUser>> {
+        return when (interval) {
+            0L -> Observable.just(listOf(DEFAULT_GIT_HAB_USERS_LIST[0]))
+            1L -> Observable.just(listOf(DEFAULT_GIT_HAB_USERS_LIST[0], DEFAULT_GIT_HAB_USERS_LIST[1]))
+            2L -> Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
+            else -> Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
+        }
+    }
+
+    override fun getObservableInterval(): Observable<Long> {
+        return Observable.interval(2, TimeUnit.SECONDS)
     }
 
 }

@@ -2,7 +2,10 @@ package com.example.githubusers.ui.git_hub_users
 
 import android.util.Log
 import com.example.githubusers.domain.repository.GitHubUsersRepository
+import com.example.githubusers.utils.DEFAULT_GIT_HAB_USERS_LIST
 import com.github.terrakok.cicerone.Router
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import moxy.MvpPresenter
 
@@ -12,16 +15,31 @@ class GitHubUsersPresenter(
 ) : MvpPresenter<GitHubUsersView>() {
 
     val itemGitHubUsersPresenter: ItemGitHubUsersPresenter = ItemGitHubUsersPresenterImpl()
-
+    private lateinit var disposableInterval: Disposable
 
     override fun onFirstViewAttach() {
         viewState.initView()
-        subscribeToDefaultGitHubUsers()
+        subscribeToInterval()
         super.onFirstViewAttach()
     }
 
-    private fun subscribeToDefaultGitHubUsers() {
-        gitHubUsersRepository.getObservable().subscribeBy(
+    private fun subscribeToInterval() {
+       disposableInterval = gitHubUsersRepository.getObservableInterval()
+           .observeOn(AndroidSchedulers.mainThread())
+           .subscribeBy(
+            onNext = {
+                Log.v("@@@", "$it.toString()")
+                subscribeToDefaultGitHubUsers(it)
+            },
+           onError = {
+               Log.v("@@@", "onErrorInterval: ${it.message}")
+               viewState.showError(it)
+           }
+        )
+    }
+
+    private fun subscribeToDefaultGitHubUsers(interval: Long) {
+        gitHubUsersRepository.getObservableGitHubUsers(interval).subscribeBy(
             onNext = { gitHubUsers ->
                 Log.v("@@@", "onNext: $gitHubUsers")
                 itemGitHubUsersPresenter.gitHubUsersList.apply {
@@ -34,6 +52,8 @@ class GitHubUsersPresenter(
                         onOpenAvatarGitHubUsersFragment(login, avatarUrl)
                     }
                 }
+                if (interval== DEFAULT_GIT_HAB_USERS_LIST.lastIndex.toLong())
+                    disposableInterval.dispose()
             },
             onError = {
                 Log.v("@@@", "onError: ${it.message}")
@@ -46,6 +66,7 @@ class GitHubUsersPresenter(
     }
 
     fun onRequestGitHubUsers() {
+        disposableInterval.dispose()
         loadGitHubUsers()
     }
 
