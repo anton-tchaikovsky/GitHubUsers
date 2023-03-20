@@ -4,9 +4,10 @@ import com.example.githubusers.domain.repository.GitHubUsersRepository
 import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
 
-class GitHubUsersPresenter(private val gitHubUsersRepository: GitHubUsersRepository, private val router: Router,
-private val gitHubUsersAppScreens: GitHubUsersAppScreens) :
-    MvpPresenter<GitHubUsersView>() {
+class GitHubUsersPresenter(
+    private val gitHubUsersRepository: GitHubUsersRepository, private val router: Router,
+    private val gitHubUsersAppScreens: GitHubUsersAppScreens
+) : MvpPresenter<GitHubUsersView>() {
 
     val itemGitHubUsersPresenter: ItemGitHubUsersPresenter = ItemGitHubUsersPresenterImpl()
 
@@ -20,11 +21,11 @@ private val gitHubUsersAppScreens: GitHubUsersAppScreens) :
         loadGitHubUsers()
     }
 
-    private fun onOpenAvatarGitHubUsersFragment(login: String, avatarUrl: String){
+    private fun onOpenAvatarGitHubUsersFragment(login: String, avatarUrl: String) {
         router.navigateTo(gitHubUsersAppScreens.avatarGitHubUserScreen(login, avatarUrl))
     }
 
-    fun onBackPressed(){
+    fun onBackPressed() {
         router.exit()
     }
 
