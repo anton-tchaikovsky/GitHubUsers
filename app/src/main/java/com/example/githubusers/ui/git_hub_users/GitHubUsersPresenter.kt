@@ -6,7 +6,6 @@ import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
-import io.reactivex.rxjava3.schedulers.Schedulers.io
 import moxy.MvpPresenter
 
 class GitHubUsersPresenter(
@@ -40,8 +39,6 @@ class GitHubUsersPresenter(
     private fun subscribeToLoadingGitHubUsers() {
         viewState.showLoading()
         gitHubUsersRepository.getGitHubUsers()
-            .subscribeOn(io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
                     onSuccessLoadingGitHubUsers(it)
@@ -86,6 +83,3 @@ class GitHubUsersPresenter(
     }
 
 }
-
-
-
