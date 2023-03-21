@@ -15,6 +15,7 @@ class GitHubUsersPresenter(
 
     val itemGitHubUsersPresenter: ItemGitHubUsersPresenter = ItemGitHubUsersPresenterImpl()
     private lateinit var disposableDefaultGitHubUsers: Disposable
+    private val observableDefaultGitHubUsers = gitHubUsersRepository.getDefaultGitHubUsers()
 
     override fun onFirstViewAttach() {
         viewState.initView()
@@ -24,7 +25,7 @@ class GitHubUsersPresenter(
 
     private fun subscribeToDefaultGitHubUsers() {
         viewState.showLoading()
-        disposableDefaultGitHubUsers = gitHubUsersRepository.getDefaultGitHubUsers()
+        disposableDefaultGitHubUsers = observableDefaultGitHubUsers
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = { gitHubUsers ->
@@ -76,6 +77,11 @@ class GitHubUsersPresenter(
     fun onRequestGitHubUsers() {
         disposableDefaultGitHubUsers.dispose()
         subscribeToLoadingGitHubUsers()
+    }
+
+    fun onRequestDefaultGitHubUsers(){
+        disposableDefaultGitHubUsers.dispose()
+        subscribeToDefaultGitHubUsers()
     }
 
     private fun onOpenAvatarGitHubUsersFragment(login: String, avatarUrl: String) {

@@ -12,12 +12,24 @@
         android:id="@+id/refresh_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/default_users_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="@dimen/margin_refresh_button"
         android:stateListAnimator="@null"
+        app:layout_constraintHorizontal_chainStyle="spread"
         android:text="@string/refresh" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/default_users_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/refresh_button"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="@dimen/margin_refresh_button"
+        android:stateListAnimator="@null"
+        android:text="@string/default_users" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/git_hub_users_recycler_view"
