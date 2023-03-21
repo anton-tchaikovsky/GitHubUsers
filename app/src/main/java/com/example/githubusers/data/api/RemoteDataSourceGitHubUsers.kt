@@ -4,6 +4,7 @@ import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.utils.BASE_URL_API_GIT_HUB_USERS
 import com.google.gson.GsonBuilder
 import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -18,5 +19,8 @@ class RemoteDataSourceGitHubUsers {
 
     fun callAPIGitHubUsers(callback: Callback<List<GitHubUser>>) {
         apiGitHubUsers.loadGitHubUsers().enqueue(callback)
+    }
+    fun callAPIGitHubUsers(): Response<List<GitHubUser>> {
+        return apiGitHubUsers.loadGitHubUsers().execute()
     }
 }

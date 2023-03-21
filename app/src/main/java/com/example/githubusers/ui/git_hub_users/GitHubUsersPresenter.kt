@@ -1,11 +1,12 @@
 package com.example.githubusers.ui.git_hub_users
 
-import android.util.Log
+import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.repository.GitHubUsersRepository
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import io.reactivex.rxjava3.schedulers.Schedulers.io
 import moxy.MvpPresenter
 
 class GitHubUsersPresenter(
@@ -23,66 +24,67 @@ class GitHubUsersPresenter(
     }
 
     private fun subscribeToDefaultGitHubUsers() {
+        viewState.showLoading()
         disposableDefaultGitHubUsers = gitHubUsersRepository.getDefaultGitHubUsers()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-            onNext = { gitHubUsers ->
-                Log.v("@@@", "onNext: $gitHubUsers")
-                itemGitHubUsersPresenter.gitHubUsersList.apply {
-                    clear()
-                    addAll(gitHubUsers)
+                onNext = { gitHubUsers ->
+                    onSuccessLoadingGitHubUsers(gitHubUsers)
+                },
+                onError = {
+                    onErrorLoadingGitHubUsers(it)
                 }
-                viewState.showGitHubUsers()
-                itemGitHubUsersPresenter.itemGitHubUsersClickListener = {
-                    itemGitHubUsersPresenter.gitHubUsersList[it.itemPosition!!].run {
-                        onOpenAvatarGitHubUsersFragment(login, avatarUrl)
-                    }
+            )
+    }
+
+    private fun subscribeToLoadingGitHubUsers() {
+        viewState.showLoading()
+        gitHubUsersRepository.getGitHubUsers()
+            .subscribeOn(io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    onSuccessLoadingGitHubUsers(it)
+                },
+                onError = {
+                    onErrorLoadingGitHubUsers(it)
                 }
-            },
-            onError = {
-                Log.v("@@@", "onError: ${it.message}")
-                viewState.showError(it)
-            },
-            onComplete = {
-                Log.v("@@@", "onComplete")
+            )
+    }
+
+    private fun onErrorLoadingGitHubUsers(error: Throwable) {
+        viewState.run {
+            hideLoading()
+            showError(error)
+        }
+    }
+
+    private fun onSuccessLoadingGitHubUsers(gitHubUsersList: List<GitHubUser>) {
+        itemGitHubUsersPresenter.gitHubUsersList.apply {
+            clear()
+            addAll(gitHubUsersList)
+        }
+        viewState.run {
+            showAnimateGitHubUsers()
+            hideLoading()
+            showGitHubUsers()
+        }
+        itemGitHubUsersPresenter.itemGitHubUsersClickListener = {
+            itemGitHubUsersPresenter.gitHubUsersList[it.itemPosition!!].run {
+                onOpenAvatarGitHubUsersFragment(login, avatarUrl)
             }
-        )
+        }
     }
 
     fun onRequestGitHubUsers() {
         disposableDefaultGitHubUsers.dispose()
-        loadGitHubUsers()
+        subscribeToLoadingGitHubUsers()
     }
 
     private fun onOpenAvatarGitHubUsersFragment(login: String, avatarUrl: String) {
         router.navigateTo(gitHubUsersAppScreens.avatarGitHubUserScreen(login, avatarUrl))
     }
 
-    private fun loadGitHubUsers() {
-        viewState.run {
-            showLoading()
-            gitHubUsersRepository.getGitHubUsers(
-                onSuccess = {
-                    itemGitHubUsersPresenter.gitHubUsersList.apply {
-                        clear()
-                        addAll(it)
-                    }
-                    showAnimateGitHubUsers()
-                    hideLoading()
-                    showGitHubUsers()
-                    itemGitHubUsersPresenter.itemGitHubUsersClickListener = {
-                        itemGitHubUsersPresenter.gitHubUsersList[it.itemPosition!!].run {
-                            onOpenAvatarGitHubUsersFragment(login, avatarUrl)
-                        }
-                    }
-                },
-                onError = {
-                    hideLoading()
-                    showError(it)
-                }
-            )
-        }
-    }
 }
 
 
