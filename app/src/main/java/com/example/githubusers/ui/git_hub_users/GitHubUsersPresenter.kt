@@ -40,8 +40,9 @@ class GitHubUsersPresenter(
     private fun subscribeToLoadingGitHubUsers() {
         viewState.showLoading()
         gitHubUsersRepository.getGitHubUsers()
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onNext = {
+                onSuccess = {
                     onSuccessLoadingGitHubUsers(it)
                 },
                 onError = {
