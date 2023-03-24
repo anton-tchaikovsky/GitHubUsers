@@ -6,8 +6,10 @@ import com.example.githubusers.domain.repository.GitHubRepository
 import com.example.githubusers.utils.GIT_HUB_IMAGE
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
 import okhttp3.ResponseBody
 import java.io.File
@@ -32,23 +34,28 @@ class GitHubUsersPresenter(
 
     private fun subscribeToLoadingGitHubImage() {
         gitHubRepository.getGitHubImage()
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    saveGitHubImage(it)},
+                    Completable
+                        .fromAction { saveGitHubImage(it) }
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy(
+                            onError = { viewState.showError(it) }
+                        )
+                },
                 onError = {
-                    viewState.showError(it) }
+                    viewState.showError(it)
+                }
             )
     }
 
     private fun saveGitHubImage(responseBodyGitHubImage: ResponseBody) {
-        try{
-            val path: File = Environment.getExternalStorageDirectory()
-            val file = File(path, GIT_HUB_IMAGE)
-            val fileOutputStream = FileOutputStream(file)
-            fileOutputStream.write(responseBodyGitHubImage.bytes())
-        } catch (e:Exception){
-            viewState.showError(e)
-        }
+        val path: File = Environment.getExternalStorageDirectory()
+        val file = File(path, GIT_HUB_IMAGE)
+        val fileOutputStream = FileOutputStream(file)
+        fileOutputStream.write(responseBodyGitHubImage.bytes())
     }
 
     private fun subscribeToDefaultGitHubUsers() {
