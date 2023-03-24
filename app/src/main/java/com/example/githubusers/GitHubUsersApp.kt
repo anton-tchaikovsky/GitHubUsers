@@ -2,8 +2,8 @@ package com.example.githubusers
 
 import android.app.Application
 import android.content.Context
-import com.example.githubusers.data.repository.GitHubUsersRepositoryImpl
-import com.example.githubusers.domain.repository.GitHubUsersRepository
+import com.example.githubusers.data.repository.GitHubRepositoryImpl
+import com.example.githubusers.domain.repository.GitHubRepository
 import com.github.terrakok.cicerone.Cicerone
 
 val Context.gitHubUserApp: GitHubUsersApp
@@ -14,16 +14,8 @@ class GitHubUsersApp : Application() {
     private val cicerone = Cicerone.create()
     val router get() = cicerone.router
     val navigatorHolder get() = cicerone.getNavigatorHolder()
-    val gitHubUsersRepository: GitHubUsersRepository by lazy {
-        GitHubUsersRepositoryImpl()
+    val gitHubRepository: GitHubRepository by lazy {
+        GitHubRepositoryImpl()
     }
-//    companion object {
-//        internal lateinit var INSTANCE: GitHubUsersApp
-//            private set
-//    }
-//    override fun onCreate() {
-//        super.onCreate()
-//        INSTANCE = this
-//    }
-//
+
 }

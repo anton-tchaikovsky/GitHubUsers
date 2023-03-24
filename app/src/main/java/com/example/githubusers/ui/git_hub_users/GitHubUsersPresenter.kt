@@ -1,26 +1,54 @@
 package com.example.githubusers.ui.git_hub_users
 
+import android.os.Environment
 import com.example.githubusers.domain.dto.GitHubUser
-import com.example.githubusers.domain.repository.GitHubUsersRepository
+import com.example.githubusers.domain.repository.GitHubRepository
+import com.example.githubusers.utils.GIT_HUB_IMAGE
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import moxy.MvpPresenter
+import okhttp3.ResponseBody
+import java.io.File
+import java.io.FileOutputStream
+
 
 class GitHubUsersPresenter(
-    private val gitHubUsersRepository: GitHubUsersRepository, private val router: Router,
+    private val gitHubRepository: GitHubRepository, private val router: Router,
     private val gitHubUsersAppScreens: GitHubUsersAppScreens
 ) : MvpPresenter<GitHubUsersView>() {
 
     val itemGitHubUsersPresenter: ItemGitHubUsersPresenter = ItemGitHubUsersPresenterImpl()
     private lateinit var disposableDefaultGitHubUsers: Disposable
-    private val observableDefaultGitHubUsers = gitHubUsersRepository.getDefaultGitHubUsers()
+    private val observableDefaultGitHubUsers = gitHubRepository.getDefaultGitHubUsers()
 
     override fun onFirstViewAttach() {
         viewState.initView()
+        subscribeToLoadingGitHubImage()
         subscribeToDefaultGitHubUsers()
         super.onFirstViewAttach()
+    }
+
+    private fun subscribeToLoadingGitHubImage() {
+        gitHubRepository.getGitHubImage()
+            .subscribeBy(
+                onSuccess = {
+                    saveGitHubImage(it)},
+                onError = {
+                    viewState.showError(it) }
+            )
+    }
+
+    private fun saveGitHubImage(responseBodyGitHubImage: ResponseBody) {
+        try{
+            val path: File = Environment.getExternalStorageDirectory()
+            val file = File(path, GIT_HUB_IMAGE)
+            val fileOutputStream = FileOutputStream(file)
+            fileOutputStream.write(responseBodyGitHubImage.bytes())
+        } catch (e:Exception){
+            viewState.showError(e)
+        }
     }
 
     private fun subscribeToDefaultGitHubUsers() {
@@ -39,7 +67,7 @@ class GitHubUsersPresenter(
 
     private fun subscribeToLoadingGitHubUsers() {
         viewState.showLoading()
-        gitHubUsersRepository.getGitHubUsers()
+        gitHubRepository.getGitHubUsers()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {

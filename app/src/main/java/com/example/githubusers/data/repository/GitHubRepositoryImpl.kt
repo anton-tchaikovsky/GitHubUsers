@@ -1,14 +1,16 @@
 package com.example.githubusers.data.repository
 
+import com.example.githubusers.data.api.RemoteDataSourceGitHubImage
 import com.example.githubusers.data.api.RemoteDataSourceGitHubUsers
 import com.example.githubusers.domain.dto.GitHubUser
-import com.example.githubusers.domain.repository.GitHubUsersRepository
+import com.example.githubusers.domain.repository.GitHubRepository
 import com.example.githubusers.utils.DEFAULT_GIT_HAB_USERS_LIST
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
+import okhttp3.ResponseBody
 import java.util.concurrent.TimeUnit
 
-class GitHubUsersRepositoryImpl:GitHubUsersRepository {
+class GitHubRepositoryImpl:GitHubRepository {
 
     override fun getGitHubUsers(): Single<List<GitHubUser>> =
         RemoteDataSourceGitHubUsers().callAPIGitHubUsers()
@@ -52,5 +54,8 @@ class GitHubUsersRepositoryImpl:GitHubUsersRepository {
                 }
             }
     }
+
+    override fun getGitHubImage(): Single<ResponseBody> =
+        RemoteDataSourceGitHubImage().callAPIGitHubImage()
 
 }

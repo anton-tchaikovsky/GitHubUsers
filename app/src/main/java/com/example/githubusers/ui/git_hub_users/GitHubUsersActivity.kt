@@ -20,7 +20,7 @@ import moxy.ktx.moxyPresenter
 class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
 
     private lateinit var binding: ActivityGitHubUsersBinding
-    private val gitHubUsersPresenter by moxyPresenter { GitHubUsersPresenter(gitHubUserApp.gitHubUsersRepository, gitHubUserApp.router, GitHubUsersAppScreensImpl()) }
+    private val gitHubUsersPresenter by moxyPresenter { GitHubUsersPresenter(gitHubUserApp.gitHubRepository, gitHubUserApp.router, GitHubUsersAppScreensImpl()) }
     private val gitHubUsersAdapter by lazy { GitHubUsersAdapter(gitHubUsersPresenter.itemGitHubUsersPresenter) }
     private val navigator:Navigator = AppNavigator(this, R.id.git_hub_users_container)
 
