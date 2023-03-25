@@ -14,4 +14,6 @@ interface GitHubUsersView:MvpView{
     fun showLoading()
     fun hideLoading()
     fun showAnimateGitHubUsers()
+    @StateStrategyType(SkipStrategy::class)
+    fun checkPermissionWriteExternalStorage()
 }

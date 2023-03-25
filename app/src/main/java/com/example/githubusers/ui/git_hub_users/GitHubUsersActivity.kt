@@ -1,9 +1,13 @@
 package com.example.githubusers.ui.git_hub_users
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
@@ -94,6 +98,19 @@ class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
             layoutManager =
                 LinearLayoutManager(this@GitHubUsersActivity, RecyclerView.VERTICAL, false)
             adapter = gitHubUsersAdapter
+        }
+    }
+
+    override fun checkPermissionWriteExternalStorage() {
+        when (PackageManager.PERMISSION_GRANTED) {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) -> gitHubUsersPresenter.subscribeToLoadingGitHubImage()
+            else -> registerForActivityResult(ActivityResultContracts.RequestPermission()) { isPermission ->
+                if (isPermission)
+                    gitHubUsersPresenter.subscribeToLoadingGitHubImage()
+            }.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
     }
 

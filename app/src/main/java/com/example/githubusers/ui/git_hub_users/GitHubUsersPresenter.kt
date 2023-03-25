@@ -26,13 +26,15 @@ class GitHubUsersPresenter(
     private val observableDefaultGitHubUsers = gitHubRepository.getDefaultGitHubUsers()
 
     override fun onFirstViewAttach() {
-        viewState.initView()
-        subscribeToLoadingGitHubImage()
+        viewState.run {
+            initView()
+            checkPermissionWriteExternalStorage()
+        }
         subscribeToDefaultGitHubUsers()
         super.onFirstViewAttach()
     }
 
-    private fun subscribeToLoadingGitHubImage() {
+    fun subscribeToLoadingGitHubImage() {
         gitHubRepository.getGitHubImage()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
