@@ -9,4 +9,5 @@ interface GitHubRepository {
     fun getGitHubUsers(): Single<List<GitHubUser>>
     fun getDefaultGitHubUsers(): Observable<List<GitHubUser>>
     fun getGitHubImage(): Single<ResponseBody>
+    fun saveGitHubImage(responseBodyGitHubImage: ResponseBody)
 }

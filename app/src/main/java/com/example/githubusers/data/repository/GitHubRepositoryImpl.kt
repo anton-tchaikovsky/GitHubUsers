@@ -1,13 +1,17 @@
 package com.example.githubusers.data.repository
 
+import android.os.Environment
 import com.example.githubusers.data.api.RemoteDataSourceGitHubImage
 import com.example.githubusers.data.api.RemoteDataSourceGitHubUsers
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.repository.GitHubRepository
 import com.example.githubusers.utils.DEFAULT_GIT_HAB_USERS_LIST
+import com.example.githubusers.utils.GIT_HUB_IMAGE
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import okhttp3.ResponseBody
+import java.io.File
+import java.io.FileOutputStream
 import java.util.concurrent.TimeUnit
 
 class GitHubRepositoryImpl:GitHubRepository {
@@ -57,5 +61,12 @@ class GitHubRepositoryImpl:GitHubRepository {
 
     override fun getGitHubImage(): Single<ResponseBody> =
         RemoteDataSourceGitHubImage().callAPIGitHubImage()
+
+    override fun saveGitHubImage(responseBodyGitHubImage: ResponseBody) {
+        val path: File = Environment.getExternalStorageDirectory()
+        val file = File(path, GIT_HUB_IMAGE)
+        val fileOutputStream = FileOutputStream(file)
+        fileOutputStream.write(responseBodyGitHubImage.bytes())
+    }
 
 }

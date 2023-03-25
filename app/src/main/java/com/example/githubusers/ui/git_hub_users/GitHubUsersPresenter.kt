@@ -1,9 +1,7 @@
 package com.example.githubusers.ui.git_hub_users
 
-import android.os.Environment
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.repository.GitHubRepository
-import com.example.githubusers.utils.GIT_HUB_IMAGE
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
@@ -11,9 +9,6 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
-import okhttp3.ResponseBody
-import java.io.File
-import java.io.FileOutputStream
 
 
 class GitHubUsersPresenter(
@@ -40,7 +35,7 @@ class GitHubUsersPresenter(
             .subscribeBy(
                 onSuccess = {
                     Completable
-                        .fromAction { saveGitHubImage(it) }
+                        .fromAction { gitHubRepository.saveGitHubImage(it) }
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy(
@@ -51,13 +46,6 @@ class GitHubUsersPresenter(
                     viewState.showError(it)
                 }
             )
-    }
-
-    private fun saveGitHubImage(responseBodyGitHubImage: ResponseBody) {
-        val path: File = Environment.getExternalStorageDirectory()
-        val file = File(path, GIT_HUB_IMAGE)
-        val fileOutputStream = FileOutputStream(file)
-        fileOutputStream.write(responseBodyGitHubImage.bytes())
     }
 
     private fun subscribeToDefaultGitHubUsers() {
