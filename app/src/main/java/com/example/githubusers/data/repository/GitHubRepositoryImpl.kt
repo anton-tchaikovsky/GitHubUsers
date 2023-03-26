@@ -7,14 +7,20 @@ import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.repository.GitHubRepository
 import com.example.githubusers.utils.DEFAULT_GIT_HAB_USERS_LIST
 import com.example.githubusers.utils.GIT_HUB_IMAGE
+import com.example.githubusers.utils.MESSAGE_ERROR_FOR_PERMISSION_TO_READ
+import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import okhttp3.ResponseBody
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class GitHubRepositoryImpl:GitHubRepository {
+
+    private val path: File = Environment.getExternalStorageDirectory()
+    private val file = File(path, GIT_HUB_IMAGE)
 
     override fun getGitHubUsers(): Single<List<GitHubUser>> =
         RemoteDataSourceGitHubUsers().callAPIGitHubUsers()
@@ -59,14 +65,23 @@ class GitHubRepositoryImpl:GitHubRepository {
             }
     }
 
-    override fun getGitHubImage(): Single<ResponseBody> =
+    override fun loadGitHubImage(): Single<ResponseBody> =
         RemoteDataSourceGitHubImage().callAPIGitHubImage()
 
     override fun saveGitHubImage(responseBodyGitHubImage: ResponseBody) {
-        val path: File = Environment.getExternalStorageDirectory()
-        val file = File(path, GIT_HUB_IMAGE)
         val fileOutputStream = FileOutputStream(file)
         fileOutputStream.write(responseBodyGitHubImage.bytes())
+    }
+
+    override fun readGitHubImage():Maybe<File>{
+        return Maybe.create {
+            if (!file.exists())
+                it.onComplete()
+            else if(file.canRead())
+                it.onSuccess(file)
+            else
+                it.onError(IOException(MESSAGE_ERROR_FOR_PERMISSION_TO_READ))
+        }
     }
 
 }

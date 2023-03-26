@@ -75,6 +75,7 @@ class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
         initRecycleView()
         initRefreshButton()
         initDefaultUsersButton()
+        initOpenGitHubImageButton()
     }
 
     private fun initLoadingIndicator() {
@@ -90,6 +91,12 @@ class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
     private fun initDefaultUsersButton() {
         binding.defaultUsersButton.setOnClickListener {
             gitHubUsersPresenter.onRequestDefaultGitHubUsers()
+        }
+    }
+
+    private fun initOpenGitHubImageButton() {
+        binding.openGithubImageButton.setOnClickListener {
+            gitHubUsersPresenter.onRequestGitHubImage()
         }
     }
 

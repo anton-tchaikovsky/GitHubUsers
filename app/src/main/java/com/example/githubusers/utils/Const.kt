@@ -17,3 +17,5 @@ val DEFAULT_GIT_HAB_USERS_LIST = listOf(
     GitHubUser(4, "wycats", "https://avatars.githubusercontent.com/u/4?v=4"),
     GitHubUser(5, "ezmobius", "https://avatars.githubusercontent.com/u/5?v=4")
 )
+
+const val MESSAGE_ERROR_FOR_PERMISSION_TO_READ = "There is no permission to read the file."

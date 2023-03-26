@@ -3,4 +3,5 @@
     <string name="refresh">refresh</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="default_users">default users</string>
+    <string name="github_image">github image</string>
 </resources>

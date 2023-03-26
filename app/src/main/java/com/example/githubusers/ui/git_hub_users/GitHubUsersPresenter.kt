@@ -30,7 +30,7 @@ class GitHubUsersPresenter(
     }
 
     fun subscribeToLoadingGitHubImage() {
-        gitHubRepository.getGitHubImage()
+        gitHubRepository.loadGitHubImage()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
@@ -110,8 +110,16 @@ class GitHubUsersPresenter(
         subscribeToDefaultGitHubUsers()
     }
 
+    fun onRequestGitHubImage(){
+        onOpenGitHubImageFragment()
+    }
+
     private fun onOpenAvatarGitHubUsersFragment(login: String, avatarUrl: String) {
         router.navigateTo(gitHubUsersAppScreens.avatarGitHubUserScreen(login, avatarUrl))
+    }
+
+    private fun onOpenGitHubImageFragment() {
+        router.navigateTo(gitHubUsersAppScreens.gitHubImageScreen())
     }
 
 }
