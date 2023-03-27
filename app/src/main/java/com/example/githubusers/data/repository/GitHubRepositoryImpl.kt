@@ -73,23 +73,45 @@ class GitHubRepositoryImpl:GitHubRepository {
 
     override fun saveGitHubImageJpg(responseBodyGitHubImage: ResponseBody): Completable {
         return Completable.fromAction {
-            val fileOutputStream = FileOutputStream(fileJpg)
-            fileOutputStream.write(responseBodyGitHubImage.bytes())
+            var fileOutputStream: FileOutputStream? = null
+            try {
+                fileOutputStream = FileOutputStream(fileJpg)
+                fileOutputStream.write(responseBodyGitHubImage.bytes())
+            } catch (e: Exception) {
+                throw e
+            } finally {
+                try {
+                    fileOutputStream?.close()
+                } catch (e: IOException) {
+                    throw e
+                }
+            }
         }
     }
 
     override fun saveGitHubImagePng(gitHubImage: Bitmap): Completable {
         return Completable.create {
-            val fileOutputStream = FileOutputStream(filePng)
-            if (gitHubImage.compress(
-                    Bitmap.CompressFormat.PNG,
-                    qualityCompressToPng,
-                    fileOutputStream
+            var fileOutputStream: FileOutputStream? = null
+            try {
+                fileOutputStream = FileOutputStream(filePng)
+                if (gitHubImage.compress(
+                        Bitmap.CompressFormat.PNG,
+                        qualityCompressToPng,
+                        fileOutputStream
+                    )
                 )
-            )
-                it.onComplete()
-            else
-                it.onError(IllegalArgumentException(MESSAGE_ERROR_CONVERSION_TO_PNG))
+                    it.onComplete()
+                else
+                    it.onError(IllegalArgumentException(MESSAGE_ERROR_CONVERSION_TO_PNG))
+            } catch (e: Exception) {
+                throw e
+            } finally {
+                try {
+                    fileOutputStream?.close()
+                } catch (e: IOException) {
+                    throw e
+                }
+            }
         }
     }
 

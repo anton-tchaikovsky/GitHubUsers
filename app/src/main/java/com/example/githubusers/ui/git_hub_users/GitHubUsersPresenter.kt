@@ -1,5 +1,6 @@
 package com.example.githubusers.ui.git_hub_users
 
+import android.util.Log
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.repository.GitHubRepository
 import com.github.terrakok.cicerone.Router
@@ -47,6 +48,7 @@ class GitHubUsersPresenter(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
+                onComplete = { Log.v("@@@", "complete")},
                 onError = { viewState.showError(it) }
             )
     }
