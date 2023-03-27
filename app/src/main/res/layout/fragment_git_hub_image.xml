@@ -14,12 +14,13 @@
         android:scaleType="centerCrop"
         android:layout_gravity="center"/>
 
-<!--    <androidx.appcompat.widget.AppCompatButton-->
-<!--        android:id="@+id/default_users_button"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="@dimen/margin_refresh_button"-->
-<!--        android:stateListAnimator="@null"-->
-<!--        android:text="@string/default_users" />-->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/save_git_hub_image_png_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_save_git_hub_image_png_button"
+        android:text="@string/save_to_png"
+        android:layout_gravity="bottom|end"
+        />
 
 </FrameLayout>

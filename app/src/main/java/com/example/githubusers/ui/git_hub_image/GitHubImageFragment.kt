@@ -1,5 +1,6 @@
 package com.example.githubusers.ui.git_hub_image
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,17 +10,16 @@ import coil.api.load
 import com.example.githubusers.R
 import com.example.githubusers.databinding.FragmentGitHubImageBinding
 import com.example.githubusers.gitHubUserApp
+import com.example.githubusers.utils.MESSAGE_FOR_SAVED_SUCCESSFULLY
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import java.io.File
 
 @Suppress("unused")
 class GitHubImageFragment : MvpAppCompatFragment(), GitHubImageView {
 
     private val gitHubImagePresenter by moxyPresenter {
         GitHubImagePresenter(
-            requireContext().gitHubUserApp.gitHubRepository,
-            requireContext().gitHubUserApp.router
+            requireContext().gitHubUserApp.gitHubRepository
         )
     }
     private var _binding: FragmentGitHubImageBinding? = null
@@ -38,8 +38,14 @@ class GitHubImageFragment : MvpAppCompatFragment(), GitHubImageView {
             GitHubImageFragment()
     }
 
-    override fun showImage(fileGitHubImage: File) {
-        binding.gitHubImage.load(fileGitHubImage)
+    override fun initView() {
+        binding.saveGitHubImagePngButton.setOnClickListener {
+            gitHubImagePresenter.onSaveToPng()
+        }
+    }
+
+    override fun showImage(bitmapGitHubImage: Bitmap) {
+        binding.gitHubImage.load(bitmapGitHubImage)
     }
 
     override fun showNoHasImage() {
@@ -48,6 +54,10 @@ class GitHubImageFragment : MvpAppCompatFragment(), GitHubImageView {
 
     override fun showError(error: Throwable) {
         Toast.makeText(requireContext(), error.message.toString(), Toast.LENGTH_LONG).show()
+    }
+
+    override fun showSuccessSave() {
+        Toast.makeText(requireContext(), MESSAGE_FOR_SAVED_SUCCESSFULLY, Toast.LENGTH_LONG).show()
     }
 
 }

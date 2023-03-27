@@ -35,7 +35,7 @@ class GitHubUsersPresenter(
             .subscribeBy(
                 onSuccess = {
                     Completable
-                        .fromAction { gitHubRepository.saveGitHubImage(it) }
+                        .fromAction { gitHubRepository.saveGitHubImageJpg(it) }
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy(

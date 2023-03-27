@@ -2,6 +2,7 @@
 <resources>
     <dimen name="padding_git_hub_users_container">4dp</dimen>
     <dimen name="margin_refresh_button">4dp</dimen>
+    <dimen name="margin_save_git_hub_image_png_button">48dp</dimen>
     <dimen name="margin_git_hub_users_recycle_view">4dp</dimen>
     <dimen name="width_git_hub_user_avatar_image_view">150dp</dimen>
     <dimen name="height_git_hub_user_avatar_image_view">150dp</dimen>
