@@ -49,7 +49,10 @@ class GitHubImageFragment : MvpAppCompatFragment(), GitHubImageView {
     }
 
     override fun showNoHasImage() {
-        binding.gitHubImage.load(R.drawable.ic_baseline_hide_image_24)
+        binding.run {
+            saveGitHubImagePngButton.visibility = View.GONE
+            gitHubImage.load(R.drawable.ic_baseline_hide_image_24)
+        }
     }
 
     override fun showError(error: Throwable) {

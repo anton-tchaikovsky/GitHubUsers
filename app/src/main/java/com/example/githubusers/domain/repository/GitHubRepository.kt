@@ -14,6 +14,6 @@ interface GitHubRepository {
     fun getDefaultGitHubUsers(): Observable<List<GitHubUser>>
     fun loadGitHubImage(): Single<ResponseBody>
     fun readGitHubImage(): Maybe<Bitmap>
-    fun saveGitHubImageJpg(responseBodyGitHubImage: ResponseBody)
+    fun saveGitHubImageJpg(responseBodyGitHubImage: ResponseBody):Completable
     fun saveGitHubImagePng(gitHubImage: Bitmap):Completable
 }

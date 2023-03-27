@@ -4,11 +4,11 @@ import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.repository.GitHubRepository
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
+import okhttp3.ResponseBody
 
 
 class GitHubUsersPresenter(
@@ -34,17 +34,20 @@ class GitHubUsersPresenter(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    Completable
-                        .fromAction { gitHubRepository.saveGitHubImageJpg(it) }
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeBy(
-                            onError = { viewState.showError(it) }
-                        )
+                    subscribeToSaveGitHubImageJpg(it)
                 },
                 onError = {
                     viewState.showError(it)
                 }
+            )
+    }
+
+    private fun subscribeToSaveGitHubImageJpg(responseBodyGitHubImage: ResponseBody) {
+        gitHubRepository.saveGitHubImageJpg(responseBodyGitHubImage)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onError = { viewState.showError(it) }
             )
     }
 

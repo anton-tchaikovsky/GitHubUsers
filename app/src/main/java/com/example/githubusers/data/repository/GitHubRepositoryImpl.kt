@@ -71,9 +71,11 @@ class GitHubRepositoryImpl:GitHubRepository {
     override fun loadGitHubImage(): Single<ResponseBody> =
         RemoteDataSourceGitHubImage().callAPIGitHubImage()
 
-    override fun saveGitHubImageJpg(responseBodyGitHubImage: ResponseBody) {
-        val fileOutputStream = FileOutputStream(fileJpg)
-        fileOutputStream.write(responseBodyGitHubImage.bytes())
+    override fun saveGitHubImageJpg(responseBodyGitHubImage: ResponseBody): Completable {
+        return Completable.fromAction {
+            val fileOutputStream = FileOutputStream(fileJpg)
+            fileOutputStream.write(responseBodyGitHubImage.bytes())
+        }
     }
 
     override fun saveGitHubImagePng(gitHubImage: Bitmap): Completable {
