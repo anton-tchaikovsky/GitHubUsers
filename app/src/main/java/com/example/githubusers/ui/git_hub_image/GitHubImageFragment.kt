@@ -11,8 +11,10 @@ import coil.api.load
 import com.example.githubusers.R
 import com.example.githubusers.databinding.FragmentGitHubImageBinding
 import com.example.githubusers.gitHubUserApp
+import com.example.githubusers.utils.DURATION_SAVE_GIT_HUB_IMAGE_PNG
 import com.example.githubusers.utils.MESSAGE_FOR_SAVED_SUCCESSFULLY
 import com.example.githubusers.utils.MESSAGE_PROCESS_OF_SAVING_IN_PNG
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -26,15 +28,27 @@ class GitHubImageFragment : MvpAppCompatFragment(), GitHubImageView {
     }
     private var _binding: FragmentGitHubImageBinding? = null
     private val binding get() = _binding!!
-    private val alertDialog:AlertDialog by lazy {
+
+    private val progressIndicator: LinearProgressIndicator by lazy {
+        LinearProgressIndicator(requireContext()).apply {
+            max = DURATION_SAVE_GIT_HUB_IMAGE_PNG.toInt()
+            progress = 0
+        }
+    }
+
+    private val alertDialog: AlertDialog by lazy {
         AlertDialog.Builder(requireContext())
             .setMessage(MESSAGE_PROCESS_OF_SAVING_IN_PNG)
-            .setNegativeButton(android.R.string.cancel
+            .setNegativeButton(
+                android.R.string.cancel
             ) { _, _ -> gitHubImagePresenter.onCancelSavePng() }
-            .setPositiveButton(android.R.string.ok
+            .setPositiveButton(
+                android.R.string.ok
             ) { _, _ -> gitHubImagePresenter.onContinueSavePng() }
+            .setView(progressIndicator)
             .create()
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,6 +86,10 @@ class GitHubImageFragment : MvpAppCompatFragment(), GitHubImageView {
 
     override fun dismissAlertDialog() {
         alertDialog.dismiss()
+    }
+
+    override fun setProgress(progress: Int) {
+        progressIndicator.progress = progress
     }
 
     override fun showError(error: Throwable) {

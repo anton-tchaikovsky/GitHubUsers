@@ -13,6 +13,7 @@ interface GitHubImageView:MvpView {
     fun showNoHasImage()
     fun showAlertDialog()
     fun dismissAlertDialog()
+    fun setProgress(progress:Int)
     @StateStrategyType(SkipStrategy::class)
     fun showError(error: Throwable)
     @StateStrategyType(SkipStrategy::class)

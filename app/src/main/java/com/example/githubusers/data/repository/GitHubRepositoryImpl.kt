@@ -147,6 +147,10 @@ class GitHubRepositoryImpl:GitHubRepository {
         }
     }
 
+    override fun getProgressSaveGitHubImagePng(): Observable<Long> {
+        return Observable.intervalRange(0, 5001, 0, 1, TimeUnit.MILLISECONDS)
+    }
+
     override fun readGitHubImage(): Maybe<Bitmap> {
         return Maybe.create {
             if (!fileJpg.exists())

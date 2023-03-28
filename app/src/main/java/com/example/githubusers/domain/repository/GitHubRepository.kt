@@ -15,4 +15,5 @@ interface GitHubRepository {
     fun readGitHubImage(): Maybe<Bitmap>
     fun saveGitHubImageJpg(responseBodyGitHubImage: ResponseBody):Completable
     fun saveGitHubImagePng(gitHubImage: Bitmap):Completable
+    fun getProgressSaveGitHubImagePng(): Observable<Long>
 }
