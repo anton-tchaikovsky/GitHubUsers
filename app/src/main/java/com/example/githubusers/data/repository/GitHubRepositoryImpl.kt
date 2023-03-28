@@ -92,25 +92,57 @@ class GitHubRepositoryImpl:GitHubRepository {
     override fun saveGitHubImagePng(gitHubImage: Bitmap): Completable {
         return Completable.create {
             var fileOutputStream: FileOutputStream? = null
+// Открываем поток записи.
+// При возникновении исключения, если есть наблюдатель, испускаем onError, иначе пишем printStackTrace().
             try {
                 fileOutputStream = FileOutputStream(filePng)
-                if (gitHubImage.compress(
-                        Bitmap.CompressFormat.PNG,
-                        qualityCompressToPng,
-                        fileOutputStream
-                    )
-                )
-                    it.onComplete()
-                else
-                    it.onError(IllegalArgumentException(MESSAGE_ERROR_CONVERSION_TO_PNG))
             } catch (e: Exception) {
-                throw e
-            } finally {
+                if (it.isDisposed)
+                    e.printStackTrace()
+                else
+                    it.onError(e)
+            }
+// Обрабатываем уничтожение наблюдателя: закрываем поток записи.
+// При возникновении исключения пишем  printStackTrace().
+            it.setCancellable {
                 try {
                     fileOutputStream?.close()
                 } catch (e: IOException) {
-                    throw e
+                    e.printStackTrace()
                 }
+            }
+// Иммитируем длительный процесс сохранения.
+// При возникновении исключения, если есть наблюдатель, испускаем onError,
+// иначе пишем printStackTrace().
+            try {
+                Thread.sleep(DURATION_SAVE_GIT_HUB_IMAGE_PNG)
+            } catch (e: InterruptedException) {
+                if (it.isDisposed)
+                    e.printStackTrace()
+                else
+                    it.onError(e)
+            }
+// Сохраняеи Png.
+// При успешном сохранении,если есть наблюдатель, испускаем onComplete(),
+// при неуспешном,если есть наблюдатель - испускаем onError.
+            if (gitHubImage.compress(
+                    Bitmap.CompressFormat.PNG,
+                    qualityCompressToPng,
+                    fileOutputStream
+                ) && !it.isDisposed
+            )
+                it.onComplete()
+            else if (!it.isDisposed)
+                it.onError(IllegalArgumentException(MESSAGE_ERROR_CONVERSION_TO_PNG))
+// Закрываем поток записи, если он есть.
+// При возникновении исключения, если есть наблюдатель, испускаем onError, иначе пишем printStackTrace().
+            try {
+                fileOutputStream?.close()
+            } catch (e: IOException) {
+                if (it.isDisposed)
+                    e.printStackTrace()
+                else
+                    it.onError(e)
             }
         }
     }

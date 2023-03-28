@@ -1,5 +1,6 @@
 package com.example.githubusers.ui.git_hub_image
 
+import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import com.example.githubusers.R
 import com.example.githubusers.databinding.FragmentGitHubImageBinding
 import com.example.githubusers.gitHubUserApp
 import com.example.githubusers.utils.MESSAGE_FOR_SAVED_SUCCESSFULLY
+import com.example.githubusers.utils.MESSAGE_PROCESS_OF_SAVING_IN_PNG
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -24,6 +26,15 @@ class GitHubImageFragment : MvpAppCompatFragment(), GitHubImageView {
     }
     private var _binding: FragmentGitHubImageBinding? = null
     private val binding get() = _binding!!
+    private val alertDialog:AlertDialog by lazy {
+        AlertDialog.Builder(requireContext())
+            .setMessage(MESSAGE_PROCESS_OF_SAVING_IN_PNG)
+            .setNegativeButton(android.R.string.cancel
+            ) { _, _ -> gitHubImagePresenter.onCancelSavePng() }
+            .setPositiveButton(android.R.string.ok
+            ) { _, _ -> gitHubImagePresenter.onContinueSavePng() }
+            .create()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +51,7 @@ class GitHubImageFragment : MvpAppCompatFragment(), GitHubImageView {
 
     override fun initView() {
         binding.saveGitHubImagePngButton.setOnClickListener {
-            gitHubImagePresenter.onSaveToPng()
+            gitHubImagePresenter.onSavePng()
         }
     }
 
@@ -53,6 +64,14 @@ class GitHubImageFragment : MvpAppCompatFragment(), GitHubImageView {
             saveGitHubImagePngButton.visibility = View.GONE
             gitHubImage.load(R.drawable.ic_baseline_hide_image_24)
         }
+    }
+
+    override fun showAlertDialog() {
+        alertDialog.show()
+    }
+
+    override fun dismissAlertDialog() {
+        alertDialog.dismiss()
     }
 
     override fun showError(error: Throwable) {

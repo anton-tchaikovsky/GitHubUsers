@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import com.example.githubusers.domain.repository.GitHubRepository
 import com.example.githubusers.utils.MESSAGE_ERROR_FILE_NOT_FOUND
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
@@ -13,6 +14,7 @@ class GitHubImagePresenter(private val gitHubRepository: GitHubRepository) :
     MvpPresenter<GitHubImageView>() {
 
     private var bitmapGitHubImage: Bitmap? = null
+    private var disposableSaveGitHubImagePng: Disposable? = null
 
     override fun onFirstViewAttach() {
         viewState.initView()
@@ -40,22 +42,34 @@ class GitHubImagePresenter(private val gitHubRepository: GitHubRepository) :
         }
     }
 
-    fun onSaveToPng() {
+    fun onSavePng() {
         viewState.run {
+            showAlertDialog()
             bitmapGitHubImage?.let {
-                gitHubRepository.saveGitHubImagePng(bitmapGitHubImage!!)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeBy(
-                        onComplete = {
-                            showSuccessSave()
-                        },
-                        onError = {
-                            showError(it)
-                        }
-                    )
+                disposableSaveGitHubImagePng =
+                    gitHubRepository.saveGitHubImagePng(bitmapGitHubImage!!)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeBy(
+                            onComplete = {
+                                showSuccessSave()
+                                dismissAlertDialog()
+                            },
+                            onError = {
+                                showError(it)
+                                dismissAlertDialog()
+                            }
+                        )
             }
         }
     }
 
+    fun onCancelSavePng() {
+        disposableSaveGitHubImagePng?.dispose()
+        viewState.dismissAlertDialog()
+    }
+
+    fun onContinueSavePng() {
+        viewState.dismissAlertDialog()
+    }
 }

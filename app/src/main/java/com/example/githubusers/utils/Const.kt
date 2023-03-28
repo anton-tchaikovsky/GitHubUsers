@@ -9,6 +9,7 @@ const val END_POINT_API_GIT_HUB_USERS = "users"
 const val END_POINT_API_GIT_HUB_IMAGE = "20190523/juu/kisspng-github-software-repository-computer-icons-email-5ce6e863973725.5475298415586366436194.jpg"
 
 const val DURATION_FADE_IN_GIT_HUB_USERS = 2000L
+const val DURATION_SAVE_GIT_HUB_IMAGE_PNG = 5000L
 val DEFAULT_GIT_HAB_USERS_LIST = listOf(
     GitHubUser(1, "mojombo", "https://avatars.githubusercontent.com/u/1?v=4"),
     GitHubUser(2, "defunkt", "https://avatars.githubusercontent.com/u/2?v=4"),
@@ -24,3 +25,4 @@ const val MESSAGE_ERROR_FILE_NOT_FOUND = "File not found"
 const val GIT_HUB_IMAGE_JPG = "git_hub.jpg"
 const val GIT_HUB_IMAGE_PNG = "git_hub.png"
 const val MESSAGE_FOR_SAVED_SUCCESSFULLY= "The file was saved successfully"
+const val MESSAGE_PROCESS_OF_SAVING_IN_PNG= "File in the process of saving in png"

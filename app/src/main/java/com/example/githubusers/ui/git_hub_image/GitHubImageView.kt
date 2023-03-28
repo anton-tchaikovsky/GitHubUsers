@@ -5,13 +5,14 @@ import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.SkipStrategy
 import moxy.viewstate.strategy.StateStrategyType
-import java.io.File
 
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface GitHubImageView:MvpView {
     fun initView()
     fun showImage(bitmapGitHubImage: Bitmap)
     fun showNoHasImage()
+    fun showAlertDialog()
+    fun dismissAlertDialog()
     @StateStrategyType(SkipStrategy::class)
     fun showError(error: Throwable)
     @StateStrategyType(SkipStrategy::class)

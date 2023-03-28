@@ -7,7 +7,6 @@ import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import okhttp3.ResponseBody
-import java.io.File
 
 interface GitHubRepository {
     fun getGitHubUsers(): Single<List<GitHubUser>>
