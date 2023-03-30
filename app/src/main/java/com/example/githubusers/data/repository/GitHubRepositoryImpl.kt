@@ -6,6 +6,7 @@ import android.os.Environment
 import com.example.githubusers.data.api.RemoteDataSourceGitHubImage
 import com.example.githubusers.data.api.RemoteDataSourceGitHubUsers
 import com.example.githubusers.domain.dto.GitHubUser
+import com.example.githubusers.domain.dto.RepositoriesGitHubUser
 import com.example.githubusers.domain.repository.GitHubRepository
 import com.example.githubusers.utils.*
 import io.reactivex.rxjava3.core.Completable
@@ -27,6 +28,9 @@ class GitHubRepositoryImpl:GitHubRepository {
 
     override fun getGitHubUsers(): Single<List<GitHubUser>> =
         RemoteDataSourceGitHubUsers().callAPIGitHubUsers()
+
+    override fun getReposGitHubUser(repoUrl:String): Single<List<RepositoriesGitHubUser>> =
+        RemoteDataSourceGitHubUsers().callAPIRepositoriesGitHubUser(repoUrl)
 
     override fun getDefaultGitHubUsers(): Observable<List<GitHubUser>> {
         return Observable.intervalRange(0, 5, 0, 10, TimeUnit.MILLISECONDS)

@@ -5,5 +5,6 @@ interface ItemGitHubUsersView {
     fun showAvatar(url: String)
     fun showLogin (login: String)
     fun showId (id: Int)
-    fun setItemGitHubUsersClickListener(itemGitHubUsersClickListener:((ItemGitHubUsersView)->Unit))
+    fun setAvatarClickListener(avatarClickListener:((ItemGitHubUsersView)->Unit))
+    fun setOpenRepositoriesButtonClickListener(openRepositoriesButtonClickListener:((ItemGitHubUsersView)->Unit))
 }

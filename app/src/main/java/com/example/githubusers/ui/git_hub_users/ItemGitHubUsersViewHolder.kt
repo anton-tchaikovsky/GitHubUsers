@@ -11,7 +11,7 @@ class ItemGitHubUsersViewHolder
     override var itemPosition: Int? = null
 
     override fun showAvatar(url: String) {
-        binding.gitHubUsersAvatarImageView.load(url)
+        binding.gitHubUserAvatarImageView.load(url)
     }
 
     override fun showLogin(login: String) {
@@ -22,9 +22,15 @@ class ItemGitHubUsersViewHolder
         binding.gitHubUserId.text = id.toString()
     }
 
-    override fun setItemGitHubUsersClickListener(itemGitHubUsersClickListener:((ItemGitHubUsersView)->Unit)){
-        itemView.setOnClickListener {
-            itemGitHubUsersClickListener(this@ItemGitHubUsersViewHolder)
+    override fun setAvatarClickListener(avatarClickListener:((ItemGitHubUsersView)->Unit)){
+        binding.gitHubUserAvatarImageView.setOnClickListener {
+            avatarClickListener(this@ItemGitHubUsersViewHolder)
+        }
+    }
+
+    override fun setOpenRepositoriesButtonClickListener(openRepositoriesButtonClickListener: (ItemGitHubUsersView) -> Unit) {
+        binding.openRepositoriesButton.setOnClickListener {
+            openRepositoriesButtonClickListener(this@ItemGitHubUsersViewHolder)
         }
     }
 

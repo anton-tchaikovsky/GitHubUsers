@@ -1,6 +1,7 @@
 package com.example.githubusers.ui.git_hub_users
 
 import com.example.githubusers.domain.dto.GitHubUser
+import com.example.githubusers.domain.dto.RepositoriesGitHubUser
 import com.example.githubusers.domain.repository.GitHubRepository
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -96,11 +97,28 @@ class GitHubUsersPresenter(
             hideLoading()
             showGitHubUsers()
         }
-        itemGitHubUsersPresenter.itemGitHubUsersClickListener = {
+        itemGitHubUsersPresenter.avatarClickListener = {
             itemGitHubUsersPresenter.gitHubUsersList[it.itemPosition!!].run {
-                onOpenAvatarGitHubUsersFragment(login, avatarUrl)
+                openAvatarGitHubUserFragment(login, avatarUrl)
             }
         }
+
+        itemGitHubUsersPresenter.openRepositoriesButtonClickListener = {
+                subscribeToLoadingRepositoriesGitHubUser(itemGitHubUsersPresenter.gitHubUsersList[it.itemPosition!!])
+        }
+    }
+
+    private fun subscribeToLoadingRepositoriesGitHubUser(gitHubUser: GitHubUser) {
+        gitHubRepository.getReposGitHubUser(gitHubUser.reposUrl)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = {
+                    openRepositoriesGitHubUserFragment(gitHubUser to it)
+                },
+                onError = {
+                    viewState.showError(it)
+                }
+            )
     }
 
     fun onRequestGitHubUsers() {
@@ -108,17 +126,21 @@ class GitHubUsersPresenter(
         subscribeToLoadingGitHubUsers()
     }
 
-    fun onRequestDefaultGitHubUsers(){
+    fun onRequestDefaultGitHubUsers() {
         disposableDefaultGitHubUsers.dispose()
         subscribeToDefaultGitHubUsers()
     }
 
-    fun onRequestGitHubImage(){
+    fun onRequestGitHubImage() {
         onOpenGitHubImageFragment()
     }
 
-    private fun onOpenAvatarGitHubUsersFragment(login: String, avatarUrl: String) {
+    private fun openAvatarGitHubUserFragment(login: String, avatarUrl: String) {
         router.navigateTo(gitHubUsersAppScreens.avatarGitHubUserScreen(login, avatarUrl))
+    }
+
+    private fun openRepositoriesGitHubUserFragment(gitHubUserWithRepositories: Pair <GitHubUser, List<RepositoriesGitHubUser>>) {
+
     }
 
     private fun onOpenGitHubImageFragment() {

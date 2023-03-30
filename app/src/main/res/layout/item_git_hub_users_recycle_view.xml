@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/git_hub_users_avatar_image_view"
+            android:id="@+id/git_hub_user_avatar_image_view"
             android:layout_width="@dimen/width_git_hub_user_avatar_image_view"
             android:layout_height="@dimen/height_git_hub_user_avatar_image_view"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -25,23 +25,31 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/git_hub_users_avatar_image_view"
-            app:layout_constraintBottom_toTopOf="@+id/git_hub_user_id"
+            app:layout_constraintStart_toEndOf="@+id/git_hub_user_id"
+            app:layout_constraintBottom_toTopOf="@+id/open_repositories_button"
             app:layout_constraintVertical_chainStyle="spread"
+            app:layout_constraintHorizontal_chainStyle="spread"
             tools:text="login"/>
 
         <TextView
             android:id="@+id/git_hub_user_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/git_hub_users_avatar_image_view"
-            app:layout_constraintTop_toBottomOf="@+id/git_hub_user_login"
+            app:layout_constraintEnd_toStartOf="@id/git_hub_user_login"
+            app:layout_constraintStart_toEndOf="@+id/git_hub_user_avatar_image_view"
+            app:layout_constraintTop_toTopOf="@+id/git_hub_user_login"
             tools:text="id"/>
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/open_repositories_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/git_hub_user_avatar_image_view"
+            app:layout_constraintTop_toBottomOf="@+id/git_hub_user_login"
+            android:text="@string/repositories"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 </com.google.android.material.card.MaterialCardView>

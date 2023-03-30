@@ -5,4 +5,5 @@
     <string name="default_users">default users</string>
     <string name="github_image">github image</string>
     <string name="save_to_png">save to png</string>
+    <string name="repositories">repositories</string>
 </resources>

@@ -6,7 +6,6 @@ import okhttp3.ResponseBody
 import retrofit2.http.GET
 
 interface APIGitHubImage {
-
     @GET(END_POINT_API_GIT_HUB_IMAGE)
     fun loadGitHubImage(): Single<ResponseBody>
 }
