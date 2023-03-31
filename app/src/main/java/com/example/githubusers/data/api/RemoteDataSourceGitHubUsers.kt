@@ -1,7 +1,7 @@
 package com.example.githubusers.data.api
 
 import com.example.githubusers.domain.dto.GitHubUser
-import com.example.githubusers.domain.dto.RepositoriesGitHubUser
+import com.example.githubusers.domain.dto.RepositoryGitHubUser
 import com.example.githubusers.utils.BASE_URL_API_GIT_HUB_USERS
 import com.google.gson.GsonBuilder
 import io.reactivex.rxjava3.core.Single
@@ -22,7 +22,7 @@ class RemoteDataSourceGitHubUsers {
     fun callAPIGitHubUsers():Single<List<GitHubUser>> =
         apiGitHubUsers.loadGitHubUsers()
 
-    fun callAPIRepositoriesGitHubUser(repoUrl: String): Single<List<RepositoriesGitHubUser>> =
+    fun callAPIRepositoriesGitHubUser(repoUrl: String): Single<List<RepositoryGitHubUser>> =
         apiGitHubUsers.loadRepositoriesGitHubUser(repoUrl)
 
 }

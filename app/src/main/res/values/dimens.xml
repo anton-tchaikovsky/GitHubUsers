@@ -7,7 +7,12 @@
     <dimen name="width_git_hub_user_avatar_image_view">150dp</dimen>
     <dimen name="height_git_hub_user_avatar_image_view">150dp</dimen>
     <dimen name="margin_git_hub_user_large_login">36dp</dimen>
-    <dimen name="text_size__git_hub_user_large_login">24sp</dimen>
     <dimen name="padding_git_hub_user_large_login">4dp</dimen>
+    <dimen name="margin_repositories_recycle_view">4dp</dimen>
+    <dimen name="padding_repository_layout">12dp</dimen>
+    <dimen name="text_size_large">24sp</dimen>
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_middle">20sp</dimen>
+    <dimen name="height_separator_view">2dp</dimen>
 
 </resources>

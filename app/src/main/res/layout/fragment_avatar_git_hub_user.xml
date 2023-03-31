@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/margin_git_hub_user_large_login"
-        android:textSize="@dimen/text_size__git_hub_user_large_login"
+        android:textSize="@dimen/text_size_large"
         android:textColor="@android:color/white"
         android:background="@android:color/black"
         android:padding="@dimen/padding_git_hub_user_large_login"

@@ -1,7 +1,7 @@
 package com.example.githubusers.ui.git_hub_users
 
 import com.example.githubusers.domain.dto.GitHubUser
-import com.example.githubusers.domain.dto.RepositoriesGitHubUser
+import com.example.githubusers.domain.dto.RepositoryGitHubUser
 import com.example.githubusers.domain.repository.GitHubRepository
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -88,7 +88,7 @@ class GitHubUsersPresenter(
     }
 
     private fun onSuccessLoadingGitHubUsers(gitHubUsersList: List<GitHubUser>) {
-        itemGitHubUsersPresenter.gitHubUsersList.apply {
+        itemGitHubUsersPresenter.entityList.apply {
             clear()
             addAll(gitHubUsersList)
         }
@@ -98,13 +98,13 @@ class GitHubUsersPresenter(
             showGitHubUsers()
         }
         itemGitHubUsersPresenter.avatarClickListener = {
-            itemGitHubUsersPresenter.gitHubUsersList[it.itemPosition!!].run {
+            itemGitHubUsersPresenter.entityList[it.itemPosition!!].run {
                 openAvatarGitHubUserFragment(login, avatarUrl)
             }
         }
 
         itemGitHubUsersPresenter.openRepositoriesButtonClickListener = {
-                subscribeToLoadingRepositoriesGitHubUser(itemGitHubUsersPresenter.gitHubUsersList[it.itemPosition!!])
+                subscribeToLoadingRepositoriesGitHubUser(itemGitHubUsersPresenter.entityList[it.itemPosition!!])
         }
     }
 
@@ -113,7 +113,7 @@ class GitHubUsersPresenter(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
-                    openRepositoriesGitHubUserFragment(gitHubUser to it)
+                    openRepositoriesGitHubUserFragment(gitHubUser, it)
                 },
                 onError = {
                     viewState.showError(it)
@@ -139,8 +139,8 @@ class GitHubUsersPresenter(
         router.navigateTo(gitHubUsersAppScreens.avatarGitHubUserScreen(login, avatarUrl))
     }
 
-    private fun openRepositoriesGitHubUserFragment(gitHubUserWithRepositories: Pair <GitHubUser, List<RepositoriesGitHubUser>>) {
-
+    private fun openRepositoriesGitHubUserFragment(gitHubUser:GitHubUser, repositoriesGitHubUser:List<RepositoryGitHubUser>) {
+        router.navigateTo(gitHubUsersAppScreens.repositoriesGitHubUserScreen(gitHubUser, repositoriesGitHubUser))
     }
 
     private fun onOpenGitHubImageFragment() {
