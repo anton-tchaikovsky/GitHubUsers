@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import coil.api.load
 import com.example.githubusers.R
 import com.example.githubusers.databinding.FragmentGitHubImageBinding
 import com.example.githubusers.gitHubUserApp
+import com.example.githubusers.ui.git_hub_users.GlideImageLoader
 import com.example.githubusers.utils.DURATION_SAVE_GIT_HUB_IMAGE_PNG
 import com.example.githubusers.utils.MESSAGE_FOR_SAVED_SUCCESSFULLY
 import com.example.githubusers.utils.MESSAGE_PROCESS_OF_SAVING_IN_PNG
@@ -28,6 +28,8 @@ class GitHubImageFragment : MvpAppCompatFragment(), GitHubImageView {
     }
     private var _binding: FragmentGitHubImageBinding? = null
     private val binding get() = _binding!!
+
+    private val imageLoader = GlideImageLoader()
 
     private val progressIndicator: LinearProgressIndicator by lazy {
         LinearProgressIndicator(requireContext()).apply {
@@ -70,13 +72,13 @@ class GitHubImageFragment : MvpAppCompatFragment(), GitHubImageView {
     }
 
     override fun showImage(bitmapGitHubImage: Bitmap) {
-        binding.gitHubImage.load(bitmapGitHubImage)
+        imageLoader.loadImageInto(bitmapGitHubImage, binding.gitHubImage)
     }
 
     override fun showNoHasImage() {
         binding.run {
             saveGitHubImagePngButton.visibility = View.GONE
-            gitHubImage.load(R.drawable.ic_baseline_hide_image_24)
+            imageLoader.loadImageInto(R.drawable.ic_baseline_hide_image_24, gitHubImage)
         }
     }
 

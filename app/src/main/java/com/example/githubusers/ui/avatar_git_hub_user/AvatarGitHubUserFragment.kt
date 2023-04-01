@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import coil.api.load
 import com.example.githubusers.databinding.FragmentAvatarGitHubUserBinding
+import com.example.githubusers.ui.git_hub_users.GlideImageLoader
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -20,6 +20,7 @@ class AvatarGitHubUserFragment : MvpAppCompatFragment(), AvatarGitHubUserView {
     private val avatarGitHubUserPresenter by moxyPresenter { AvatarGitHubUserPresenter()}
     private var _binding: FragmentAvatarGitHubUserBinding? = null
     private val binding get() = _binding!!
+    private var imageLoader = GlideImageLoader()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +55,7 @@ class AvatarGitHubUserFragment : MvpAppCompatFragment(), AvatarGitHubUserView {
     override fun showAvatar(login: String, avatarUrl: String) {
         binding.run {
             gitHubUserLargeLogin.text = login
-            gitHubUsersLargeAvatarImageView.load(avatarUrl)
+            imageLoader.loadImageInto(avatarUrl, gitHubUsersLargeAvatarImageView)
         }
     }
 

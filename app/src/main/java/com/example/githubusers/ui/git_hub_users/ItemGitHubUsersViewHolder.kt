@@ -1,17 +1,20 @@
 package com.example.githubusers.ui.git_hub_users
 
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
 import com.example.githubusers.databinding.ItemGitHubUsersRecycleViewBinding
 
 class ItemGitHubUsersViewHolder
-    (private val binding: ItemGitHubUsersRecycleViewBinding):
+    (
+    private val binding: ItemGitHubUsersRecycleViewBinding,
+    private val imageLoader: ImageLoader<AppCompatImageView>
+) :
     RecyclerView.ViewHolder(binding.root), ItemGitHubUsersView {
 
     override var itemPosition: Int? = null
 
     override fun showAvatar(url: String) {
-        binding.gitHubUserAvatarImageView.load(url)
+        imageLoader.loadImageInto(url, binding.gitHubUserAvatarImageView)
     }
 
     override fun showLogin(login: String) {
