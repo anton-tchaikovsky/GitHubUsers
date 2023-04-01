@@ -100,4 +100,9 @@ class GitHubImageFragment : MvpAppCompatFragment(), GitHubImageView {
         Toast.makeText(requireContext(), MESSAGE_FOR_SAVED_SUCCESSFULLY, Toast.LENGTH_LONG).show()
     }
 
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
 }

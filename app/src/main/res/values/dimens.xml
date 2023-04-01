@@ -14,5 +14,6 @@
     <dimen name="text_size_small">16sp</dimen>
     <dimen name="text_size_middle">20sp</dimen>
     <dimen name="height_separator_view">2dp</dimen>
+    <dimen name="grid_layout_margin">2dp</dimen>
 
 </resources>

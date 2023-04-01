@@ -61,4 +61,9 @@ class AvatarGitHubUserFragment : MvpAppCompatFragment(), AvatarGitHubUserView {
     override fun showEmptyGitHubUser() {
         Toast.makeText(requireContext(), EMPTY_GIT_HUB_USER, Toast.LENGTH_SHORT).show()
     }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
 }

@@ -1,11 +1,15 @@
 package com.example.githubusers.ui.repositories_git_hub_user
 
-import android.util.Log
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
+import com.example.githubusers.ui.git_hub_users.GitHubUsersAppScreens
+import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
 
-class RepositoriesGitHubUserPresenter :
+class RepositoriesGitHubUserPresenter(
+    private val router: Router,
+    private val gitHubUsersAppScreens: GitHubUsersAppScreens
+) :
     MvpPresenter<RepositoriesGitHubUserView>() {
     val itemRepositoriesGitHubUserPresenter: ItemRepositoriesGitHubUserPresenter =
         ItemRepositoriesGitHubUserPresenterImpl()
@@ -21,7 +25,7 @@ class RepositoriesGitHubUserPresenter :
         }
 
         itemRepositoriesGitHubUserPresenter.itemClickListener = {
-            Log.d("@@@", it.itemPosition.toString())
+            router.navigateTo(gitHubUsersAppScreens.infoAboutRepositoryGitHubUserScreen(repositoriesGitHubUser[it.itemPosition!!]))
         }
 
         viewState.run {

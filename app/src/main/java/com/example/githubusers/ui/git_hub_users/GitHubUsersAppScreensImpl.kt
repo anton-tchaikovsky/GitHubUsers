@@ -4,6 +4,8 @@ import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
 import com.example.githubusers.ui.avatar_git_hub_user.AvatarGitHubUserFragment
 import com.example.githubusers.ui.git_hub_image.GitHubImageFragment
+import com.example.githubusers.ui.info_about_repository_git_hub_user.InfoAboutRepositoryGitHubUserFragment
+import com.example.githubusers.ui.info_about_repository_git_hub_user.InfoAboutRepositoryGitHubUserView
 import com.example.githubusers.ui.repositories_git_hub_user.RepositoriesGitHubUserFragment
 import com.github.terrakok.cicerone.Screen
 import com.github.terrakok.cicerone.androidx.FragmentScreen
@@ -25,5 +27,8 @@ class GitHubUsersAppScreensImpl : GitHubUsersAppScreens {
                 repositoriesGitHubUser
             )
         }
+
+    override fun infoAboutRepositoryGitHubUserScreen(repositoryGitHubUser: RepositoryGitHubUser): Screen =
+        FragmentScreen {InfoAboutRepositoryGitHubUserFragment.newInstance(repositoryGitHubUser)}
 
 }

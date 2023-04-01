@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:clickable="true"
+    android:focusable="true"
+    xmlns:tools="http://schemas.android.com/tools">
+
+        <TextView
+            android:id="@+id/title_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/grid_layout_margin"
+            android:background="@color/white"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:text="@string/name"
+            android:textSize="@dimen/text_size_small"
+           />
+
+        <TextView
+            android:id="@+id/title_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/grid_layout_margin"
+            android:background="@color/white"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:text="@string/language"
+            android:textSize="@dimen/text_size_small"
+            />
+
+        <TextView
+            android:id="@+id/title_stargazers_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/grid_layout_margin"
+            android:background="@color/white"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:text="@string/stargazers_count"
+            android:textSize="@dimen/text_size_small"
+            />
+
+        <TextView
+            android:id="@+id/title_watchers_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/grid_layout_margin"
+            android:background="@color/white"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:text="@string/watchers_count"
+            android:textSize="@dimen/text_size_small"
+            />
+
+        <TextView
+            android:id="@+id/title_forks_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/grid_layout_margin"
+            android:background="@color/white"
+            android:layout_row="4"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:text="@string/forks_count"
+            android:textSize="@dimen/text_size_small"
+            />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/grid_layout_margin"
+            android:background="@color/white"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_columnWeight="2"
+            tools:text="@string/name"
+            android:textSize="@dimen/text_size_small"
+            />
+
+        <TextView
+            android:id="@+id/language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/grid_layout_margin"
+            android:background="@color/white"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:layout_columnWeight="2"
+            tools:text="@string/language"
+            android:textSize="@dimen/text_size_small"
+            />
+
+        <TextView
+            android:id="@+id/stargazers_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/grid_layout_margin"
+            android:background="@color/white"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:layout_columnWeight="2"
+            tools:text="@string/stargazers_count"
+            android:textSize="@dimen/text_size_small"
+            />
+
+        <TextView
+            android:id="@+id/watchers_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/grid_layout_margin"
+            android:background="@color/white"
+            android:layout_row="3"
+            android:layout_column="1"
+            android:layout_columnWeight="2"
+            tools:text="@string/watchers_count"
+            android:textSize="@dimen/text_size_small"
+            />
+
+        <TextView
+            android:id="@+id/forks_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/grid_layout_margin"
+            android:background="@color/white"
+            android:layout_row="4"
+            android:layout_column="1"
+            android:layout_columnWeight="2"
+            tools:text="@string/forks_count"
+            android:textSize="@dimen/text_size_small"
+            />
+
+</GridLayout>

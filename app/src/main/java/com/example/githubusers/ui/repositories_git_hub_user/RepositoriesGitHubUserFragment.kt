@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.githubusers.databinding.FragmentRepositoriesGitHubUserBinding
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
+import com.example.githubusers.gitHubUserApp
+import com.example.githubusers.ui.git_hub_users.GitHubUsersAppScreensImpl
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -19,7 +21,7 @@ private const val KEY_REPOSITORIES_GIT_HUB_USER = "KeyRepositoriesGitHubUser"
 class RepositoriesGitHubUserFragment : MvpAppCompatFragment(), RepositoriesGitHubUserView {
 
     private val repositoriesGitHubUserPresenter by moxyPresenter {
-        RepositoriesGitHubUserPresenter()
+        RepositoriesGitHubUserPresenter(requireContext().gitHubUserApp.router, GitHubUsersAppScreensImpl())
     }
     private val repositoriesGitHubUserAdapter by lazy {
         RepositoriesGitHubUserAdapter(
@@ -85,5 +87,10 @@ class RepositoriesGitHubUserFragment : MvpAppCompatFragment(), RepositoriesGitHu
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             adapter = repositoriesGitHubUserAdapter
         }
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }
