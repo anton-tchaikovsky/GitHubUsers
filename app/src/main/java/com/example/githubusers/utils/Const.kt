@@ -8,6 +8,10 @@ const val BASE_URL_API_GIT_HUB_IMAGE = "https://img2.freepng.ru/"
 const val END_POINT_API_GIT_HUB_USERS = "users"
 const val END_POINT_API_GIT_HUB_IMAGE = "20190523/juu/kisspng-github-software-repository-computer-icons-email-5ce6e863973725.5475298415586366436194.jpg"
 
+//Room
+const val DATABASE_NAME = "GitHubUser.db"
+const val DATABASE_HAS_NOT_CREATED = "Database has not been created."
+
 const val DURATION_FADE_IN_GIT_HUB_USERS = 2000L
 const val DURATION_SAVE_GIT_HUB_IMAGE_PNG = 5000L
 val DEFAULT_GIT_HAB_USERS_LIST = listOf(
