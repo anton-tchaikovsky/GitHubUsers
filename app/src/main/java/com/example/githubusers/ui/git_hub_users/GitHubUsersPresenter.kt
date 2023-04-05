@@ -109,7 +109,7 @@ class GitHubUsersPresenter(
     }
 
     private fun subscribeToLoadingRepositoriesGitHubUser(gitHubUser: GitHubUser) {
-        gitHubRepository.getReposGitHubUser(gitHubUser.reposUrl)
+        gitHubRepository.getRepositoriesGitHubUser(gitHubUser)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {

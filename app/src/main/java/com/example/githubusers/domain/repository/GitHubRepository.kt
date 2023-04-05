@@ -11,7 +11,7 @@ import okhttp3.ResponseBody
 
 interface GitHubRepository {
     fun getGitHubUsers(): Single<List<GitHubUser>>
-    fun getReposGitHubUser(repoUrl:String): Single<List<RepositoryGitHubUser>>
+    fun getRepositoriesGitHubUser(gitHubUser: GitHubUser): Single<List<RepositoryGitHubUser>>
     fun getDefaultGitHubUsers(): Observable<List<GitHubUser>>
     fun loadGitHubImage(): Single<ResponseBody>
     fun readGitHubImage(): Maybe<Bitmap>

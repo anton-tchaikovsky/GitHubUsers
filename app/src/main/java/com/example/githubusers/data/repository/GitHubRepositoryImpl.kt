@@ -61,9 +61,26 @@ class GitHubRepositoryImpl(private val netWorkStatus: INetWorkStatus) : GitHubRe
             }
             .subscribeOn(Schedulers.io())
 
-
-    override fun getReposGitHubUser(repoUrl: String): Single<List<RepositoryGitHubUser>> =
-        remoteDataSourceGitHubUsers.callAPIRepositoriesGitHubUser(repoUrl)
+    override fun getRepositoriesGitHubUser(gitHubUser: GitHubUser): Single<List<RepositoryGitHubUser>> =
+        netWorkStatus.isConnectSingle()
+            .flatMap { isConnect ->
+                if (isConnect){
+                    remoteDataSourceGitHubUsers.callAPIRepositoriesGitHubUser(gitHubUser.reposUrl)
+                        .flatMap { repositoriesGitHubUser ->
+                            Single.fromCallable {
+                                if (databaseGitHubUsers.gitHubUserDao().findByLogin(gitHubUser.login)!=null)
+                                databaseGitHubUsers.repositoryGitHubUserDao().insert(
+                                    mapFromRepositoriesGitHubUserToRoomRepositoryGitHubUser(repositoriesGitHubUser, gitHubUser.id))
+                                return@fromCallable repositoriesGitHubUser
+                            }
+                        }
+                } else {
+                    Single.fromCallable {
+                        return@fromCallable mapFromRoomRepositoriesGitHubUserToRepositoriesGitHubUser(databaseGitHubUsers.repositoryGitHubUserDao().getAll())
+                    }
+                }
+            }
+            .subscribeOn(Schedulers.io())
 
     override fun getDefaultGitHubUsers(): Observable<List<GitHubUser>> {
         return Observable.intervalRange(0, 5, 0, 10, TimeUnit.MILLISECONDS)
