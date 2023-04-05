@@ -2,6 +2,7 @@ package com.example.githubusers
 
 import android.app.Application
 import android.content.Context
+import com.example.githubusers.data.network.NetWorkStatus
 import com.example.githubusers.data.repository.GitHubRepositoryImpl
 import com.example.githubusers.data.room.DatabaseGitHubUsers
 import com.example.githubusers.domain.repository.GitHubRepository
@@ -16,7 +17,7 @@ class GitHubUsersApp : Application() {
     val router get() = cicerone.router
     val navigatorHolder get() = cicerone.getNavigatorHolder()
     val gitHubRepository: GitHubRepository by lazy {
-        GitHubRepositoryImpl()
+        GitHubRepositoryImpl(NetWorkStatus(this))
     }
 
     override fun onCreate() {

@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory
 import android.os.Environment
 import com.example.githubusers.data.api.RemoteDataSourceGitHubImage
 import com.example.githubusers.data.api.RemoteDataSourceGitHubUsers
+import com.example.githubusers.data.network.INetWorkStatus
+import com.example.githubusers.data.room.DatabaseGitHubUsers
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
 import com.example.githubusers.domain.repository.GitHubRepository
@@ -13,24 +15,55 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.ResponseBody
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-class GitHubRepositoryImpl:GitHubRepository {
+class GitHubRepositoryImpl(private val netWorkStatus: INetWorkStatus) : GitHubRepository {
 
     private val path: File = Environment.getExternalStorageDirectory()
     private val fileJpg = File(path, GIT_HUB_IMAGE_JPG)
     private val filePng = File(path, GIT_HUB_IMAGE_PNG)
     private val qualityCompressToPng = 100
+    private val remoteDataSourceGitHubUsers: RemoteDataSourceGitHubUsers by lazy {
+        RemoteDataSourceGitHubUsers()
+    }
+    private val remoteDataSourceGitHubImage: RemoteDataSourceGitHubImage by lazy {
+        RemoteDataSourceGitHubImage()
+    }
+
+    private val databaseGitHubUsers: DatabaseGitHubUsers by lazy {
+        DatabaseGitHubUsers.getInstanceDatabase()
+    }
 
     override fun getGitHubUsers(): Single<List<GitHubUser>> =
-        RemoteDataSourceGitHubUsers().callAPIGitHubUsers()
+        netWorkStatus.isConnectSingle()
+            .flatMap { isConnect ->
+                if (isConnect) {
+                    remoteDataSourceGitHubUsers.callAPIGitHubUsers()
+                        .flatMap { gitHubUsers ->
+                            Single.fromCallable {
+                                databaseGitHubUsers.gitHubUserDao().insert(
+                                    mapFromGitHubUsersToRoomGitHubUsers(gitHubUsers)
+                                )
+                                return@fromCallable gitHubUsers
+                            }
+                        }
+                } else {
+                    Single.fromCallable {
+                       return@fromCallable mapFromRoomGitHubUsersToGitHubUsers(databaseGitHubUsers.gitHubUserDao().getAll())
+                    }
+                }
 
-    override fun getReposGitHubUser(repoUrl:String): Single<List<RepositoryGitHubUser>> =
-        RemoteDataSourceGitHubUsers().callAPIRepositoriesGitHubUser(repoUrl)
+            }
+            .subscribeOn(Schedulers.io())
+
+
+    override fun getReposGitHubUser(repoUrl: String): Single<List<RepositoryGitHubUser>> =
+        remoteDataSourceGitHubUsers.callAPIRepositoriesGitHubUser(repoUrl)
 
     override fun getDefaultGitHubUsers(): Observable<List<GitHubUser>> {
         return Observable.intervalRange(0, 5, 0, 10, TimeUnit.MILLISECONDS)
@@ -73,7 +106,7 @@ class GitHubRepositoryImpl:GitHubRepository {
     }
 
     override fun loadGitHubImage(): Single<ResponseBody> =
-        RemoteDataSourceGitHubImage().callAPIGitHubImage()
+        remoteDataSourceGitHubImage.callAPIGitHubImage()
 
     override fun saveGitHubImageJpg(responseBodyGitHubImage: ResponseBody): Completable {
         return Completable.fromAction {
