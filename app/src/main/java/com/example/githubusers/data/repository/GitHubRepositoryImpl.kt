@@ -6,9 +6,10 @@ import android.os.Environment
 import com.example.githubusers.data.api.RemoteDataSourceGitHubImage
 import com.example.githubusers.data.api.RemoteDataSourceGitHubUsers
 import com.example.githubusers.data.network.INetWorkStatus
-import com.example.githubusers.data.room.DatabaseGitHubUsers
 import com.example.githubusers.data.room.GitHubUsersCache
 import com.example.githubusers.data.room.IGitHubUsersCache
+import com.example.githubusers.data.room.IRepositoriesGitHubUserCache
+import com.example.githubusers.data.room.RepositoriesGitHubUserCache
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
 import com.example.githubusers.domain.repository.GitHubRepository
@@ -42,8 +43,8 @@ class GitHubRepositoryImpl(private val netWorkStatus: INetWorkStatus) : GitHubRe
         GitHubUsersCache()
     }
 
-    private val databaseGitHubUsers: DatabaseGitHubUsers by lazy {
-        DatabaseGitHubUsers.getInstanceDatabase()
+    private val repositoriesGitHubUserCache: IRepositoriesGitHubUserCache by lazy {
+        RepositoriesGitHubUserCache()
     }
 
     override fun getGitHubUsers(): Single<List<GitHubUser>> =
@@ -76,16 +77,20 @@ class GitHubRepositoryImpl(private val netWorkStatus: INetWorkStatus) : GitHubRe
                     remoteDataSourceGitHubUsers.callAPIRepositoriesGitHubUser(gitHubUser.reposUrl)
                         .flatMap { repositoriesGitHubUser ->
                             Single.fromCallable {
-                                if (databaseGitHubUsers.gitHubUserDao().findByLogin(gitHubUser.login)!=null)
-                                databaseGitHubUsers.repositoryGitHubUserDao().insert(
-                                    mapFromRepositoriesGitHubUserToRoomRepositoryGitHubUser(repositoriesGitHubUser, gitHubUser.id))
+                                repositoriesGitHubUserCache.saveToCache(
+                                    gitHubUser,
+                                    repositoriesGitHubUser
+                                )
+                                    .subscribeBy(
+                                        onError = {
+                                            it.printStackTrace()
+                                        }
+                                    )
                                 return@fromCallable repositoriesGitHubUser
                             }
                         }
                 } else {
-                    Single.fromCallable {
-                        return@fromCallable mapFromRoomRepositoriesGitHubUserToRepositoriesGitHubUser(databaseGitHubUsers.repositoryGitHubUserDao().getAll())
-                    }
+                    return@flatMap repositoriesGitHubUserCache.readFromCache(gitHubUser)
                 }
             }
             .subscribeOn(Schedulers.io())

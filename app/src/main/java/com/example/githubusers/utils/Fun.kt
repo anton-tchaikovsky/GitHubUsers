@@ -21,10 +21,10 @@ fun mapFromRoomGitHubUsersToGitHubUsers (roomGitHubUsers: List<RoomGitHubUser>):
     return gitHubUsers.toList()
 }
 
-fun mapFromRepositoriesGitHubUserToRoomRepositoryGitHubUser (repositoriesGitHubUser: List<RepositoryGitHubUser>, userId: Int): List<RoomRepositoryGitHubUser> {
+fun mapFromRepositoriesGitHubUserToRoomRepositoryGitHubUser (gitHubUser: GitHubUser, repositoriesGitHubUser: List<RepositoryGitHubUser>): List<RoomRepositoryGitHubUser> {
     val roomRepositoriesGitHubUser = mutableListOf<RoomRepositoryGitHubUser>()
     repositoriesGitHubUser.forEach {
-        roomRepositoriesGitHubUser.add(RoomRepositoryGitHubUser(it.id, it.name, it.language, it.stargazersCount, it.watchersCount, it.forksCount, userId))
+        roomRepositoriesGitHubUser.add(RoomRepositoryGitHubUser(it.id, it.name, it.language, it.stargazersCount, it.watchersCount, it.forksCount, gitHubUser.id))
     }
     return roomRepositoriesGitHubUser.toList()
 }

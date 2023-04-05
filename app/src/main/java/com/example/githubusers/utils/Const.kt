@@ -51,6 +51,7 @@ const val MESSAGE_ERROR_PERMISSION_TO_READ = "There is no permission to read the
 const val MESSAGE_ERROR_READ_JPG = "The file is not being read"
 const val MESSAGE_ERROR_CONVERSION_TO_PNG = "File conversion and saving error"
 const val MESSAGE_ERROR_FILE_NOT_FOUND = "File not found"
+const val MESSAGE_ERROR_GIT_HUB_USR_NOT_FOUND = "Github user was not found in the database"
 const val GIT_HUB_IMAGE_JPG = "git_hub.jpg"
 const val GIT_HUB_IMAGE_PNG = "git_hub.png"
 const val MESSAGE_FOR_SAVED_SUCCESSFULLY= "The file was saved successfully"
