@@ -7,6 +7,8 @@ import com.example.githubusers.data.api.RemoteDataSourceGitHubImage
 import com.example.githubusers.data.api.RemoteDataSourceGitHubUsers
 import com.example.githubusers.data.network.INetWorkStatus
 import com.example.githubusers.data.room.DatabaseGitHubUsers
+import com.example.githubusers.data.room.GitHubUsersCache
+import com.example.githubusers.data.room.IGitHubUsersCache
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
 import com.example.githubusers.domain.repository.GitHubRepository
@@ -15,6 +17,7 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.ResponseBody
 import java.io.File
@@ -35,6 +38,10 @@ class GitHubRepositoryImpl(private val netWorkStatus: INetWorkStatus) : GitHubRe
         RemoteDataSourceGitHubImage()
     }
 
+    private val gitHubUsersCache: IGitHubUsersCache by lazy {
+        GitHubUsersCache()
+    }
+
     private val databaseGitHubUsers: DatabaseGitHubUsers by lazy {
         DatabaseGitHubUsers.getInstanceDatabase()
     }
@@ -45,17 +52,18 @@ class GitHubRepositoryImpl(private val netWorkStatus: INetWorkStatus) : GitHubRe
                 if (isConnect) {
                     remoteDataSourceGitHubUsers.callAPIGitHubUsers()
                         .flatMap { gitHubUsers ->
-                            Single.fromCallable {
-                                databaseGitHubUsers.gitHubUserDao().insert(
-                                    mapFromGitHubUsersToRoomGitHubUsers(gitHubUsers)
+                            gitHubUsersCache.saveToCache(gitHubUsers)
+                                .subscribeBy(
+                                    onError = {
+                                        it.printStackTrace()
+                                    }
                                 )
-                                return@fromCallable gitHubUsers
+                            Single.fromCallable {
+                               return@fromCallable gitHubUsers
                             }
                         }
                 } else {
-                    Single.fromCallable {
-                       return@fromCallable mapFromRoomGitHubUsersToGitHubUsers(databaseGitHubUsers.gitHubUserDao().getAll())
-                    }
+                    return@flatMap gitHubUsersCache.readFromCache()
                 }
 
             }
