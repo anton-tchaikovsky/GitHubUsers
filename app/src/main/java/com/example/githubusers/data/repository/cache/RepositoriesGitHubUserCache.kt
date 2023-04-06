@@ -1,10 +1,9 @@
 package com.example.githubusers.data.repository.cache
 
 import com.example.githubusers.data.room.DatabaseGitHubUsers
-import com.example.githubusers.domain.repository.cache.IRepositoriesGitHubUserCache
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
-import com.example.githubusers.utils.MESSAGE_ERROR_GIT_HUB_USR_NOT_FOUND
+import com.example.githubusers.domain.repository.cache.IRepositoriesGitHubUserCache
 import com.example.githubusers.utils.mapFromRepositoriesGitHubUserToRoomRepositoryGitHubUser
 import com.example.githubusers.utils.mapFromRoomRepositoriesGitHubUserToRepositoriesGitHubUser
 import io.reactivex.rxjava3.core.Completable
@@ -21,7 +20,7 @@ class RepositoriesGitHubUserCache : IRepositoriesGitHubUserCache {
     ): Completable =
         Completable.create {
 // Если в БД пользователь не сохранен, то список репозиториев, относящихся к этому пользователю
-//  также не сохранется: испускается ошибка.
+//  также не сохраняется: испускается ошибка.
             if (databaseGitHubUsers.gitHubUserDao().findByLogin(gitHubUser.login) != null) {
                 databaseGitHubUsers.repositoryGitHubUserDao().insert(
                     mapFromRepositoriesGitHubUserToRoomRepositoryGitHubUser(
@@ -38,4 +37,9 @@ class RepositoriesGitHubUserCache : IRepositoriesGitHubUserCache {
         Single.fromCallable{
             mapFromRoomRepositoriesGitHubUserToRepositoriesGitHubUser(databaseGitHubUsers.repositoryGitHubUserDao().findByUserId(gitHubUser.id))
         }
+
+    companion object{
+        const val MESSAGE_ERROR_GIT_HUB_USR_NOT_FOUND = "Github user was not found in the database"
+    }
+
 }

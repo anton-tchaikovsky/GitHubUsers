@@ -2,7 +2,6 @@ package com.example.githubusers.data.api
 
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
-import com.example.githubusers.utils.BASE_URL_API_GIT_HUB_USERS
 import com.google.gson.GsonBuilder
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Retrofit
@@ -17,12 +16,16 @@ class RemoteDataSourceGitHubUsers {
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .build()
 
-    private val apiGitHubUsers = retrofitGitHubUsers.create(IApiIGitHubUsers::class.java)
+    private val apiGitHubUsers = retrofitGitHubUsers.create(IApiGitHubUsers::class.java)
 
     fun callAPIGitHubUsers():Single<List<GitHubUser>> =
         apiGitHubUsers.loadGitHubUsers()
 
     fun callAPIRepositoriesGitHubUser(repoUrl: String): Single<List<RepositoryGitHubUser>> =
         apiGitHubUsers.loadRepositoriesGitHubUser(repoUrl)
+
+    companion object{
+        private const val BASE_URL_API_GIT_HUB_USERS = "https://api.github.com/"
+    }
 
 }

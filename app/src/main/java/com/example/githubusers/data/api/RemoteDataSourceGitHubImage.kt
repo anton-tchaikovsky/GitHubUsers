@@ -1,6 +1,5 @@
 package com.example.githubusers.data.api
 
-import com.example.githubusers.utils.BASE_URL_API_GIT_HUB_IMAGE
 import io.reactivex.rxjava3.core.Single
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
@@ -19,5 +18,9 @@ class RemoteDataSourceGitHubImage {
 
     fun callAPIGitHubImage(): Single<ResponseBody> =
         apiGitHubImage.loadGitHubImage()
+
+    companion object{
+        private const val BASE_URL_API_GIT_HUB_IMAGE = "https://img2.freepng.ru/"
+    }
 
 }

@@ -5,15 +5,16 @@ import android.graphics.BitmapFactory
 import android.os.Environment
 import com.example.githubusers.data.api.RemoteDataSourceGitHubImage
 import com.example.githubusers.data.api.RemoteDataSourceGitHubUsers
-import com.example.githubusers.domain.repository.network.INetWorkStatus
 import com.example.githubusers.data.repository.cache.GitHubUsersCache
-import com.example.githubusers.domain.repository.cache.IGitHubUsersCache
-import com.example.githubusers.domain.repository.cache.IRepositoriesGitHubUserCache
 import com.example.githubusers.data.repository.cache.RepositoriesGitHubUserCache
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
 import com.example.githubusers.domain.repository.IGitHubRepository
-import com.example.githubusers.utils.*
+import com.example.githubusers.domain.repository.cache.IGitHubUsersCache
+import com.example.githubusers.domain.repository.cache.IRepositoriesGitHubUserCache
+import com.example.githubusers.domain.repository.network.INetWorkStatus
+import com.example.githubusers.utils.DEFAULT_GIT_HAB_USERS_LIST
+import com.example.githubusers.utils.DURATION_SAVE_GIT_HUB_IMAGE_PNG
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
@@ -231,6 +232,14 @@ class GitHubRepositoryImpl(private val netWorkStatus: INetWorkStatus) : IGitHubR
             } else
                 it.onError(IOException(MESSAGE_ERROR_PERMISSION_TO_READ))
         }
+    }
+
+    companion object{
+        const val MESSAGE_ERROR_PERMISSION_TO_READ = "There is no permission to read the file."
+        const val MESSAGE_ERROR_READ_JPG = "The file is not being read"
+        const val MESSAGE_ERROR_CONVERSION_TO_PNG = "File conversion and saving error"
+        const val GIT_HUB_IMAGE_JPG = "git_hub.jpg"
+        const val GIT_HUB_IMAGE_PNG = "git_hub.png"
     }
 
 }

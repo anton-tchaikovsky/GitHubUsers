@@ -18,7 +18,7 @@ import com.example.githubusers.gitHubUserApp
 import com.example.githubusers.navigation.GitHubUsersAppScreensImpl
 import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.GitHubUsersAdapter
 import com.example.githubusers.ui.image.GlideImageLoader
-import com.example.githubusers.utils.DURATION_FADE_IN_GIT_HUB_USERS
+import com.example.githubusers.utils.DURATION_FADE_IN
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -69,7 +69,7 @@ class GitHubUsersActivity : MvpAppCompatActivity(), IGitHubUsersView {
 
     override fun showAnimateGitHubUsers() {
         val transition = Fade(Fade.IN).apply {
-            duration = DURATION_FADE_IN_GIT_HUB_USERS
+            duration = DURATION_FADE_IN
         }
         TransitionManager.beginDelayedTransition(binding.gitHubUsersContainer, transition)
     }

@@ -2,7 +2,6 @@ package com.example.githubusers.ui.git_hub_image
 
 import android.graphics.Bitmap
 import com.example.githubusers.domain.repository.IGitHubRepository
-import com.example.githubusers.utils.MESSAGE_ERROR_FILE_NOT_FOUND
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -101,5 +100,9 @@ class GitHubImagePresenter(
 
     fun onContinueSavePng() {
         viewState.dismissAlertDialog()
+    }
+
+    companion object{
+        const val MESSAGE_ERROR_FILE_NOT_FOUND = "File not found"
     }
 }

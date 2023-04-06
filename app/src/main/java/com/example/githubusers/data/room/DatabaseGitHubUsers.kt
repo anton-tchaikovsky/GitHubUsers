@@ -8,8 +8,6 @@ import com.example.githubusers.data.room.dao.GitHubUserDao
 import com.example.githubusers.data.room.dao.RepositoryGitHubUserDao
 import com.example.githubusers.data.room.entity.RoomGitHubUser
 import com.example.githubusers.data.room.entity.RoomRepositoryGitHubUser
-import com.example.githubusers.utils.DATABASE_HAS_NOT_CREATED
-import com.example.githubusers.utils.DATABASE_NAME
 
 @Database(
     entities = [RoomGitHubUser::class, RoomRepositoryGitHubUser::class],
@@ -24,6 +22,9 @@ abstract class DatabaseGitHubUsers : RoomDatabase() {
 
     companion object {
         private var instanceDatabase: DatabaseGitHubUsers? = null
+        private const val DATABASE_NAME = "GitHubUser.db"
+        private const val DATABASE_HAS_NOT_CREATED = "Database has not been created."
+
         fun getInstanceDatabase(): DatabaseGitHubUsers =
             instanceDatabase ?: throw RuntimeException(DATABASE_HAS_NOT_CREATED)
 

@@ -12,8 +12,6 @@ import com.example.githubusers.databinding.FragmentGitHubImageBinding
 import com.example.githubusers.gitHubUserApp
 import com.example.githubusers.ui.image.GlideImageLoader
 import com.example.githubusers.utils.DURATION_SAVE_GIT_HUB_IMAGE_PNG
-import com.example.githubusers.utils.MESSAGE_FOR_SAVED_SUCCESSFULLY
-import com.example.githubusers.utils.MESSAGE_PROCESS_OF_SAVING_IN_PNG
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
@@ -62,6 +60,9 @@ class GitHubImageFragment : MvpAppCompatFragment(), IGitHubImageView {
     }
 
     companion object {
+        const val MESSAGE_FOR_SAVED_SUCCESSFULLY= "The file was saved successfully"
+        const val MESSAGE_PROCESS_OF_SAVING_IN_PNG= "File in the process of saving in png"
+
         fun newInstance() =
             GitHubImageFragment()
     }
