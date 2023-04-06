@@ -7,7 +7,7 @@ import com.example.githubusers.navigation.IGitHubUsersAppScreens
 import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.IItemGitHubUsersPresenter
 import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.ItemGitHubUsersPresenterImpl
 import com.github.terrakok.cicerone.Router
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -16,8 +16,10 @@ import okhttp3.ResponseBody
 
 
 class GitHubUsersPresenter(
-    private val gitHubRepository: IGitHubRepository, private val router: Router,
-    private val gitHubUsersAppScreens: IGitHubUsersAppScreens
+    private val gitHubRepository: IGitHubRepository,
+    private val router: Router,
+    private val gitHubUsersAppScreens: IGitHubUsersAppScreens,
+    private val mainThreadScheduler: Scheduler
 ) : MvpPresenter<IGitHubUsersView>() {
 
     val itemGitHubUsersPresenter: IItemGitHubUsersPresenter = ItemGitHubUsersPresenterImpl()
@@ -35,7 +37,7 @@ class GitHubUsersPresenter(
 
     fun subscribeToLoadingGitHubImage() {
         gitHubRepository.loadGitHubImage()
-            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(mainThreadScheduler)
             .subscribeBy(
                 onSuccess = {
                     subscribeToSaveGitHubImageJpg(it)
@@ -49,7 +51,7 @@ class GitHubUsersPresenter(
     private fun subscribeToSaveGitHubImageJpg(responseBodyGitHubImage: ResponseBody) {
         gitHubRepository.saveGitHubImageJpg(responseBodyGitHubImage)
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(mainThreadScheduler)
             .subscribeBy(
                 onError = { viewState.showError(it) }
             )
@@ -58,7 +60,7 @@ class GitHubUsersPresenter(
     private fun subscribeToDefaultGitHubUsers() {
         viewState.showLoading()
         disposableDefaultGitHubUsers = observableDefaultGitHubUsers
-            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(mainThreadScheduler)
             .subscribeBy(
                 onNext = { gitHubUsers ->
                     onSuccessLoadingGitHubUsers(gitHubUsers)
@@ -72,7 +74,7 @@ class GitHubUsersPresenter(
     private fun subscribeToLoadingGitHubUsers() {
         viewState.showLoading()
         gitHubRepository.getGitHubUsers()
-            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(mainThreadScheduler)
             .subscribeBy(
                 onSuccess = {
                     onSuccessLoadingGitHubUsers(it)
@@ -113,7 +115,7 @@ class GitHubUsersPresenter(
 
     private fun subscribeToLoadingRepositoriesGitHubUser(gitHubUser: GitHubUser) {
         gitHubRepository.getRepositoriesGitHubUser(gitHubUser)
-            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(mainThreadScheduler)
             .subscribeBy(
                 onSuccess = {
                     openRepositoriesGitHubUserFragment(gitHubUser, it)

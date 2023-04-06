@@ -21,13 +21,14 @@ import com.example.githubusers.ui.image.GlideImageLoader
 import com.example.githubusers.utils.DURATION_FADE_IN_GIT_HUB_USERS
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.androidx.AppNavigator
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 
 class GitHubUsersActivity : MvpAppCompatActivity(), IGitHubUsersView {
 
     private lateinit var binding: ActivityGitHubUsersBinding
-    private val gitHubUsersPresenter by moxyPresenter { GitHubUsersPresenter(gitHubUserApp.gitHubRepository, gitHubUserApp.router, GitHubUsersAppScreensImpl()) }
+    private val gitHubUsersPresenter by moxyPresenter { GitHubUsersPresenter(gitHubUserApp.gitHubRepository, gitHubUserApp.router, GitHubUsersAppScreensImpl(), AndroidSchedulers.mainThread() ) }
     private val gitHubUsersAdapter by lazy { GitHubUsersAdapter(gitHubUsersPresenter.itemGitHubUsersPresenter, GlideImageLoader()) }
     private val navigator:Navigator = AppNavigator(this, R.id.git_hub_users_container)
 

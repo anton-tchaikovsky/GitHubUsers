@@ -15,6 +15,7 @@ import com.example.githubusers.utils.DURATION_SAVE_GIT_HUB_IMAGE_PNG
 import com.example.githubusers.utils.MESSAGE_FOR_SAVED_SUCCESSFULLY
 import com.example.githubusers.utils.MESSAGE_PROCESS_OF_SAVING_IN_PNG
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -23,7 +24,7 @@ class GitHubImageFragment : MvpAppCompatFragment(), IGitHubImageView {
 
     private val gitHubImagePresenter by moxyPresenter {
         GitHubImagePresenter(
-            requireContext().gitHubUserApp.gitHubRepository
+            requireContext().gitHubUserApp.gitHubRepository, AndroidSchedulers.mainThread()
         )
     }
     private var _binding: FragmentGitHubImageBinding? = null
