@@ -10,7 +10,7 @@ import android.widget.Toast
 import com.example.githubusers.R
 import com.example.githubusers.databinding.FragmentGitHubImageBinding
 import com.example.githubusers.gitHubUserApp
-import com.example.githubusers.ui.git_hub_users.GlideImageLoader
+import com.example.githubusers.ui.image.GlideImageLoader
 import com.example.githubusers.utils.DURATION_SAVE_GIT_HUB_IMAGE_PNG
 import com.example.githubusers.utils.MESSAGE_FOR_SAVED_SUCCESSFULLY
 import com.example.githubusers.utils.MESSAGE_PROCESS_OF_SAVING_IN_PNG
@@ -19,7 +19,7 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
 @Suppress("unused")
-class GitHubImageFragment : MvpAppCompatFragment(), GitHubImageView {
+class GitHubImageFragment : MvpAppCompatFragment(), IGitHubImageView {
 
     private val gitHubImagePresenter by moxyPresenter {
         GitHubImagePresenter(

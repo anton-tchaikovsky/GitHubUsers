@@ -4,7 +4,7 @@ import com.example.githubusers.domain.dto.RepositoryGitHubUser
 import moxy.MvpPresenter
 
 class InfoAboutRepositoryGitHubUserPresenter :
-    MvpPresenter<InfoAboutRepositoryGitHubUserView>() {
+    MvpPresenter<IInfoAboutRepositoryGitHubUserView>() {
     var repositoryGitHubUser: RepositoryGitHubUser? = null
 
     override fun onFirstViewAttach() {

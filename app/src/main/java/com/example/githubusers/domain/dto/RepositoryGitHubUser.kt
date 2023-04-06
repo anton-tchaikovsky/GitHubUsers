@@ -12,5 +12,4 @@ data class RepositoryGitHubUser(
     @field: SerializedName("stargazers_count") val stargazersCount: Int,
     @field: SerializedName("watchers_count") val watchersCount: Int,
     @field: SerializedName("forks_count") val forksCount: Int
-
 ):Parcelable

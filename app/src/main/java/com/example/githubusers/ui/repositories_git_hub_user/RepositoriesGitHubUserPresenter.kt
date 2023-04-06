@@ -2,16 +2,18 @@ package com.example.githubusers.ui.repositories_git_hub_user
 
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
-import com.example.githubusers.ui.git_hub_users.GitHubUsersAppScreens
+import com.example.githubusers.navigation.IGitHubUsersAppScreens
+import com.example.githubusers.ui.repositories_git_hub_user.repositories_git_hub_user_recycle_view.IItemRepositoriesGitHubUserPresenter
+import com.example.githubusers.ui.repositories_git_hub_user.repositories_git_hub_user_recycle_view.ItemRepositoriesGitHubUserPresenterImpl
 import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
 
 class RepositoriesGitHubUserPresenter(
     private val router: Router,
-    private val gitHubUsersAppScreens: GitHubUsersAppScreens
+    private val gitHubUsersAppScreens: IGitHubUsersAppScreens
 ) :
-    MvpPresenter<RepositoriesGitHubUserView>() {
-    val itemRepositoriesGitHubUserPresenter: ItemRepositoriesGitHubUserPresenter =
+    MvpPresenter<IRepositoriesGitHubUserView>() {
+    val itemRepositoriesGitHubUserPresenter: IItemRepositoriesGitHubUserPresenter =
         ItemRepositoriesGitHubUserPresenterImpl()
     var gitHubUser: GitHubUser? = null
     var repositoriesGitHubUser: List<RepositoryGitHubUser> = listOf()

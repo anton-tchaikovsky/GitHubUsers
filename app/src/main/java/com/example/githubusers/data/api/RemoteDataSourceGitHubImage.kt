@@ -15,7 +15,7 @@ class RemoteDataSourceGitHubImage {
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .build()
 
-    private val apiGitHubImage = retrofitGitHubImage.create(APIGitHubImage::class.java)
+    private val apiGitHubImage = retrofitGitHubImage.create(IApiGitHubImage::class.java)
 
     fun callAPIGitHubImage(): Single<ResponseBody> =
         apiGitHubImage.loadGitHubImage()

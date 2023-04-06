@@ -5,14 +5,14 @@ import android.graphics.BitmapFactory
 import android.os.Environment
 import com.example.githubusers.data.api.RemoteDataSourceGitHubImage
 import com.example.githubusers.data.api.RemoteDataSourceGitHubUsers
-import com.example.githubusers.data.network.INetWorkStatus
-import com.example.githubusers.data.room.GitHubUsersCache
-import com.example.githubusers.data.room.IGitHubUsersCache
-import com.example.githubusers.data.room.IRepositoriesGitHubUserCache
-import com.example.githubusers.data.room.RepositoriesGitHubUserCache
+import com.example.githubusers.domain.repository.network.INetWorkStatus
+import com.example.githubusers.data.repository.cache.GitHubUsersCache
+import com.example.githubusers.domain.repository.cache.IGitHubUsersCache
+import com.example.githubusers.domain.repository.cache.IRepositoriesGitHubUserCache
+import com.example.githubusers.data.repository.cache.RepositoriesGitHubUserCache
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
-import com.example.githubusers.domain.repository.GitHubRepository
+import com.example.githubusers.domain.repository.IGitHubRepository
 import com.example.githubusers.utils.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Maybe
@@ -26,7 +26,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-class GitHubRepositoryImpl(private val netWorkStatus: INetWorkStatus) : GitHubRepository {
+class GitHubRepositoryImpl(private val netWorkStatus: INetWorkStatus) : IGitHubRepository {
 
     private val path: File = Environment.getExternalStorageDirectory()
     private val fileJpg = File(path, GIT_HUB_IMAGE_JPG)

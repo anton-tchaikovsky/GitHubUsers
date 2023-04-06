@@ -2,7 +2,10 @@ package com.example.githubusers.ui.git_hub_users
 
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
-import com.example.githubusers.domain.repository.GitHubRepository
+import com.example.githubusers.domain.repository.IGitHubRepository
+import com.example.githubusers.navigation.IGitHubUsersAppScreens
+import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.IItemGitHubUsersPresenter
+import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.ItemGitHubUsersPresenterImpl
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
@@ -13,11 +16,11 @@ import okhttp3.ResponseBody
 
 
 class GitHubUsersPresenter(
-    private val gitHubRepository: GitHubRepository, private val router: Router,
-    private val gitHubUsersAppScreens: GitHubUsersAppScreens
-) : MvpPresenter<GitHubUsersView>() {
+    private val gitHubRepository: IGitHubRepository, private val router: Router,
+    private val gitHubUsersAppScreens: IGitHubUsersAppScreens
+) : MvpPresenter<IGitHubUsersView>() {
 
-    val itemGitHubUsersPresenter: ItemGitHubUsersPresenter = ItemGitHubUsersPresenterImpl()
+    val itemGitHubUsersPresenter: IItemGitHubUsersPresenter = ItemGitHubUsersPresenterImpl()
     private lateinit var disposableDefaultGitHubUsers: Disposable
     private val observableDefaultGitHubUsers = gitHubRepository.getDefaultGitHubUsers()
 

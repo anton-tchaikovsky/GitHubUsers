@@ -17,7 +17,7 @@ class RemoteDataSourceGitHubUsers {
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .build()
 
-    private val apiGitHubUsers = retrofitGitHubUsers.create(APIGitHubUsers::class.java)
+    private val apiGitHubUsers = retrofitGitHubUsers.create(IApiIGitHubUsers::class.java)
 
     fun callAPIGitHubUsers():Single<List<GitHubUser>> =
         apiGitHubUsers.loadGitHubUsers()

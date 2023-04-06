@@ -6,16 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.githubusers.databinding.FragmentAvatarGitHubUserBinding
-import com.example.githubusers.ui.git_hub_users.GlideImageLoader
+import com.example.githubusers.ui.image.GlideImageLoader
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-private const val KEY_AVATAR_URL = "KeyAvatarUrl"
-private const val KEY_LOGIN = "KeyLogin"
-private const val EMPTY_GIT_HUB_USER = "Empty GitHub user"
-
 @Suppress("unused")
-class AvatarGitHubUserFragment : MvpAppCompatFragment(), AvatarGitHubUserView {
+class AvatarGitHubUserFragment : MvpAppCompatFragment(), IAvatarGitHubUserView {
 
     private val avatarGitHubUserPresenter by moxyPresenter { AvatarGitHubUserPresenter()}
     private var _binding: FragmentAvatarGitHubUserBinding? = null
@@ -43,6 +39,11 @@ class AvatarGitHubUserFragment : MvpAppCompatFragment(), AvatarGitHubUserView {
     }
 
     companion object {
+
+        private const val KEY_AVATAR_URL = "KeyAvatarUrl"
+        private const val KEY_LOGIN = "KeyLogin"
+        private const val EMPTY_GIT_HUB_USER = "Empty GitHub user"
+
         fun newInstance(login: String, avatarUrl: String) =
             AvatarGitHubUserFragment().apply {
                 arguments = Bundle().apply {

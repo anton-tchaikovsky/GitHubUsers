@@ -1,7 +1,7 @@
 package com.example.githubusers.utils
 
-import com.example.githubusers.data.room.RoomGitHubUser
-import com.example.githubusers.data.room.RoomRepositoryGitHubUser
+import com.example.githubusers.data.room.entity.RoomGitHubUser
+import com.example.githubusers.data.room.entity.RoomRepositoryGitHubUser
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
 

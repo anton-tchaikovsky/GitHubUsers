@@ -11,17 +11,18 @@ import com.example.githubusers.databinding.FragmentRepositoriesGitHubUserBinding
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
 import com.example.githubusers.gitHubUserApp
-import com.example.githubusers.ui.git_hub_users.GitHubUsersAppScreensImpl
+import com.example.githubusers.navigation.GitHubUsersAppScreensImpl
+import com.example.githubusers.ui.repositories_git_hub_user.repositories_git_hub_user_recycle_view.RepositoriesGitHubUserAdapter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-private const val KEY_GIT_HUB_USER = "KeyGitHubUser"
-private const val KEY_REPOSITORIES_GIT_HUB_USER = "KeyRepositoriesGitHubUser"
-
-class RepositoriesGitHubUserFragment : MvpAppCompatFragment(), RepositoriesGitHubUserView {
+class RepositoriesGitHubUserFragment : MvpAppCompatFragment(), IRepositoriesGitHubUserView {
 
     private val repositoriesGitHubUserPresenter by moxyPresenter {
-        RepositoriesGitHubUserPresenter(requireContext().gitHubUserApp.router, GitHubUsersAppScreensImpl())
+        RepositoriesGitHubUserPresenter(
+            requireContext().gitHubUserApp.router,
+            GitHubUsersAppScreensImpl()
+        )
     }
     private val repositoriesGitHubUserAdapter by lazy {
         RepositoriesGitHubUserAdapter(
@@ -53,6 +54,10 @@ class RepositoriesGitHubUserFragment : MvpAppCompatFragment(), RepositoriesGitHu
     }
 
     companion object {
+
+        private const val KEY_GIT_HUB_USER = "KeyGitHubUser"
+        private const val KEY_REPOSITORIES_GIT_HUB_USER = "KeyRepositoriesGitHubUser"
+
         fun newInstance(
             gitHubUser: GitHubUser,
             repositoriesGitHubUser: List<RepositoryGitHubUser>

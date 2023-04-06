@@ -4,6 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.githubusers.data.room.dao.GitHubUserDao
+import com.example.githubusers.data.room.dao.RepositoryGitHubUserDao
+import com.example.githubusers.data.room.entity.RoomGitHubUser
+import com.example.githubusers.data.room.entity.RoomRepositoryGitHubUser
 import com.example.githubusers.utils.DATABASE_HAS_NOT_CREATED
 import com.example.githubusers.utils.DATABASE_NAME
 

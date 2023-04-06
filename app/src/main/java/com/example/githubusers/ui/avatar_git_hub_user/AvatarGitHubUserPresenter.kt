@@ -3,7 +3,7 @@ package com.example.githubusers.ui.avatar_git_hub_user
 import moxy.MvpPresenter
 
 class AvatarGitHubUserPresenter:
-    MvpPresenter<AvatarGitHubUserView>() {
+    MvpPresenter<IAvatarGitHubUserView>() {
 
     var login: String?=null
     var avatarUrl: String? = null

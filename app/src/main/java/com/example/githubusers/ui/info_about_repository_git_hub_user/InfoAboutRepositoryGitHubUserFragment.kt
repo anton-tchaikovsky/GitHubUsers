@@ -9,9 +9,8 @@ import com.example.githubusers.domain.dto.RepositoryGitHubUser
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-private const val KEY_REPOSITORY_GIT_HUB_USER = "KeyRepositoryGitHubUser"
-
-class InfoAboutRepositoryGitHubUserFragment : MvpAppCompatFragment(), InfoAboutRepositoryGitHubUserView {
+class InfoAboutRepositoryGitHubUserFragment : MvpAppCompatFragment(),
+    IInfoAboutRepositoryGitHubUserView {
 
     private val repositoriesGitHubUserPresenter by moxyPresenter {
         InfoAboutRepositoryGitHubUserPresenter()
@@ -37,6 +36,9 @@ class InfoAboutRepositoryGitHubUserFragment : MvpAppCompatFragment(), InfoAboutR
     }
 
     companion object {
+
+        private const val KEY_REPOSITORY_GIT_HUB_USER = "KeyRepositoryGitHubUser"
+
         fun newInstance(repositoryGitHubUser: RepositoryGitHubUser) =
             InfoAboutRepositoryGitHubUserFragment().apply {
                 arguments = Bundle().apply {

@@ -15,13 +15,16 @@ import androidx.transition.TransitionManager
 import com.example.githubusers.R
 import com.example.githubusers.databinding.ActivityGitHubUsersBinding
 import com.example.githubusers.gitHubUserApp
+import com.example.githubusers.navigation.GitHubUsersAppScreensImpl
+import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.GitHubUsersAdapter
+import com.example.githubusers.ui.image.GlideImageLoader
 import com.example.githubusers.utils.DURATION_FADE_IN_GIT_HUB_USERS
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 
-class GitHubUsersActivity : MvpAppCompatActivity(), GitHubUsersView {
+class GitHubUsersActivity : MvpAppCompatActivity(), IGitHubUsersView {
 
     private lateinit var binding: ActivityGitHubUsersBinding
     private val gitHubUsersPresenter by moxyPresenter { GitHubUsersPresenter(gitHubUserApp.gitHubRepository, gitHubUserApp.router, GitHubUsersAppScreensImpl()) }

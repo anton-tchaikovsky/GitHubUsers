@@ -1,7 +1,7 @@
 package com.example.githubusers.ui.git_hub_image
 
 import android.graphics.Bitmap
-import com.example.githubusers.domain.repository.GitHubRepository
+import com.example.githubusers.domain.repository.IGitHubRepository
 import com.example.githubusers.utils.MESSAGE_ERROR_FILE_NOT_FOUND
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -10,8 +10,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
 import java.io.FileNotFoundException
 
-class GitHubImagePresenter(private val gitHubRepository: GitHubRepository) :
-    MvpPresenter<GitHubImageView>() {
+class GitHubImagePresenter(private val gitHubRepository: IGitHubRepository) :
+    MvpPresenter<IGitHubImageView>() {
 
     private var bitmapGitHubImage: Bitmap? = null
     private val compositeDisposable = CompositeDisposable()
