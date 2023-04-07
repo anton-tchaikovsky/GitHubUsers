@@ -7,11 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.githubusers.GitHubUsersApp
 import com.example.githubusers.databinding.FragmentRepositoriesGitHubUserBinding
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
-import com.example.githubusers.gitHubUserApp
-import com.example.githubusers.navigation.GitHubUsersAppScreensImpl
 import com.example.githubusers.ui.repositories_git_hub_user.repositories_git_hub_user_recycle_view.RepositoriesGitHubUserAdapter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -19,10 +18,9 @@ import moxy.ktx.moxyPresenter
 class RepositoriesGitHubUserFragment : MvpAppCompatFragment(), IRepositoriesGitHubUserView {
 
     private val repositoriesGitHubUserPresenter by moxyPresenter {
-        RepositoriesGitHubUserPresenter(
-            requireContext().gitHubUserApp.router,
-            GitHubUsersAppScreensImpl()
-        )
+        RepositoriesGitHubUserPresenter().apply {
+            GitHubUsersApp.instance.appComponent.inject(this)
+        }
     }
     private val repositoriesGitHubUserAdapter by lazy {
         RepositoriesGitHubUserAdapter(
@@ -34,6 +32,7 @@ class RepositoriesGitHubUserFragment : MvpAppCompatFragment(), IRepositoriesGitH
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             repositoriesGitHubUserPresenter.run {
                 gitHubUser = it.getParcelable(KEY_GIT_HUB_USER)
@@ -70,6 +69,7 @@ class RepositoriesGitHubUserFragment : MvpAppCompatFragment(), IRepositoriesGitH
                         ArrayList(repositoriesGitHubUser)
                     )
                 }
+                GitHubUsersApp.instance.appComponent.inject(this)
             }
     }
 

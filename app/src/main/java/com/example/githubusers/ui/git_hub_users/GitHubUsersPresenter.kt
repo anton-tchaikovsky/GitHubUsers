@@ -3,7 +3,7 @@ package com.example.githubusers.ui.git_hub_users
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
 import com.example.githubusers.domain.repository.IGitHubRepository
-import com.example.githubusers.navigation.IGitHubUsersAppScreens
+import com.example.githubusers.navigation.IGitHubUsersScreens
 import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.IItemGitHubUsersPresenter
 import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.ItemGitHubUsersPresenterImpl
 import com.github.terrakok.cicerone.Router
@@ -13,14 +13,19 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
 import okhttp3.ResponseBody
+import javax.inject.Inject
 
 
 class GitHubUsersPresenter(
     private val gitHubRepository: IGitHubRepository,
-    private val router: Router,
-    private val gitHubUsersAppScreens: IGitHubUsersAppScreens,
     private val mainThreadScheduler: Scheduler
 ) : MvpPresenter<IGitHubUsersView>() {
+
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var gitHubUsersAppScreens:IGitHubUsersScreens
 
     val itemGitHubUsersPresenter: IItemGitHubUsersPresenter = ItemGitHubUsersPresenterImpl()
     private lateinit var disposableDefaultGitHubUsers: Disposable

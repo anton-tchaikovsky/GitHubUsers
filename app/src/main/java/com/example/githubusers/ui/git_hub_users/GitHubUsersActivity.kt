@@ -12,40 +12,57 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
+import com.example.githubusers.GitHubUsersApp
 import com.example.githubusers.R
 import com.example.githubusers.databinding.ActivityGitHubUsersBinding
-import com.example.githubusers.gitHubUserApp
-import com.example.githubusers.navigation.GitHubUsersAppScreensImpl
 import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.GitHubUsersAdapter
 import com.example.githubusers.ui.image.GlideImageLoader
 import com.example.githubusers.utils.DURATION_FADE_IN
 import com.github.terrakok.cicerone.Navigator
+import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 class GitHubUsersActivity : MvpAppCompatActivity(), IGitHubUsersView {
 
-    private lateinit var binding: ActivityGitHubUsersBinding
-    private val gitHubUsersPresenter by moxyPresenter { GitHubUsersPresenter(gitHubUserApp.gitHubRepository, gitHubUserApp.router, GitHubUsersAppScreensImpl(), AndroidSchedulers.mainThread() ) }
-    private val gitHubUsersAdapter by lazy { GitHubUsersAdapter(gitHubUsersPresenter.itemGitHubUsersPresenter, GlideImageLoader()) }
-    private val navigator:Navigator = AppNavigator(this, R.id.git_hub_users_container)
+    @Inject
+    lateinit var navigatorHolder: NavigatorHolder
 
-        override fun onCreate(savedInstanceState: Bundle?) {
+    private lateinit var binding: ActivityGitHubUsersBinding
+    private val gitHubUsersPresenter by moxyPresenter {
+        GitHubUsersPresenter(
+            GitHubUsersApp.instance.gitHubRepository,
+            AndroidSchedulers.mainThread()
+        ).apply {
+            GitHubUsersApp.instance.appComponent.inject(this)
+        }
+    }
+    private val gitHubUsersAdapter by lazy {
+        GitHubUsersAdapter(
+            gitHubUsersPresenter.itemGitHubUsersPresenter,
+            GlideImageLoader()
+        )
+    }
+    private val navigator: Navigator = AppNavigator(this, R.id.git_hub_users_container)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        GitHubUsersApp.instance.appComponent.inject(this)
         binding = ActivityGitHubUsersBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
 
     override fun onResumeFragments() {
         super.onResumeFragments()
-        gitHubUserApp.navigatorHolder.setNavigator(navigator)
+        navigatorHolder.setNavigator(navigator)
     }
 
     override fun onPause() {
         super.onPause()
-        gitHubUserApp.navigatorHolder.removeNavigator()
+        navigatorHolder.removeNavigator()
     }
 
     @SuppressLint("NotifyDataSetChanged")

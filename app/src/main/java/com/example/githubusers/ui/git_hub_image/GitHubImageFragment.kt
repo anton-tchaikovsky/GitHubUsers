@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.githubusers.GitHubUsersApp
 import com.example.githubusers.R
 import com.example.githubusers.databinding.FragmentGitHubImageBinding
-import com.example.githubusers.gitHubUserApp
 import com.example.githubusers.ui.image.GlideImageLoader
 import com.example.githubusers.utils.DURATION_SAVE_GIT_HUB_IMAGE_PNG
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -22,7 +22,7 @@ class GitHubImageFragment : MvpAppCompatFragment(), IGitHubImageView {
 
     private val gitHubImagePresenter by moxyPresenter {
         GitHubImagePresenter(
-            requireContext().gitHubUserApp.gitHubRepository, AndroidSchedulers.mainThread()
+            GitHubUsersApp.instance.gitHubRepository, AndroidSchedulers.mainThread()
         )
     }
     private var _binding: FragmentGitHubImageBinding? = null
