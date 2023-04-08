@@ -9,10 +9,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import okhttp3.ResponseBody
 
-interface IGitHubRepository {
-    fun getGitHubUsers(): Single<List<GitHubUser>>
-    fun getRepositoriesGitHubUser(gitHubUser: GitHubUser): Single<List<RepositoryGitHubUser>>
-    fun getDefaultGitHubUsers(): Observable<List<GitHubUser>>
+interface IGitHubImageRepository {
     fun loadGitHubImage(): Single<ResponseBody>
     fun readGitHubImage(): Maybe<Bitmap>
     fun saveGitHubImageJpg(responseBodyGitHubImage: ResponseBody):Completable

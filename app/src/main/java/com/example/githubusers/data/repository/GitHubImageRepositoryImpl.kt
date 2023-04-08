@@ -4,136 +4,28 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Environment
 import com.example.githubusers.data.api.RemoteDataSourceGitHubImage
-import com.example.githubusers.data.api.RemoteDataSourceGitHubUsers
-import com.example.githubusers.data.repository.cache.GitHubUsersCache
-import com.example.githubusers.data.repository.cache.RepositoriesGitHubUserCache
-import com.example.githubusers.domain.dto.GitHubUser
-import com.example.githubusers.domain.dto.RepositoryGitHubUser
-import com.example.githubusers.domain.repository.IGitHubRepository
-import com.example.githubusers.domain.repository.cache.IGitHubUsersCache
-import com.example.githubusers.domain.repository.cache.IRepositoriesGitHubUserCache
-import com.example.githubusers.domain.repository.network.INetWorkStatus
-import com.example.githubusers.utils.DEFAULT_GIT_HAB_USERS_LIST
+import com.example.githubusers.domain.repository.IGitHubImageRepository
 import com.example.githubusers.utils.DURATION_SAVE_GIT_HUB_IMAGE_PNG
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.kotlin.subscribeBy
-import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.ResponseBody
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-class GitHubRepositoryImpl(private val netWorkStatus: INetWorkStatus) : IGitHubRepository {
+class GitHubImageRepositoryImpl:
+    IGitHubImageRepository {
 
     private val path: File = Environment.getExternalStorageDirectory()
     private val fileJpg = File(path, GIT_HUB_IMAGE_JPG)
     private val filePng = File(path, GIT_HUB_IMAGE_PNG)
     private val qualityCompressToPng = 100
-    private val remoteDataSourceGitHubUsers: RemoteDataSourceGitHubUsers by lazy {
-        RemoteDataSourceGitHubUsers()
-    }
+
     private val remoteDataSourceGitHubImage: RemoteDataSourceGitHubImage by lazy {
         RemoteDataSourceGitHubImage()
-    }
-
-    private val gitHubUsersCache: IGitHubUsersCache by lazy {
-        GitHubUsersCache()
-    }
-
-    private val repositoriesGitHubUserCache: IRepositoriesGitHubUserCache by lazy {
-        RepositoriesGitHubUserCache()
-    }
-
-    override fun getGitHubUsers(): Single<List<GitHubUser>> =
-        netWorkStatus.isConnectSingle()
-            .flatMap { isConnect ->
-                if (isConnect) {
-                    remoteDataSourceGitHubUsers.callAPIGitHubUsers()
-                        .flatMap { gitHubUsers ->
-                            gitHubUsersCache.saveToCache(gitHubUsers)
-                                .subscribeBy(
-                                    onError = {
-                                        it.printStackTrace()
-                                    }
-                                )
-                            Single.fromCallable {
-                               return@fromCallable gitHubUsers
-                            }
-                        }
-                } else {
-                    return@flatMap gitHubUsersCache.readFromCache()
-                }
-
-            }
-            .subscribeOn(Schedulers.io())
-
-    override fun getRepositoriesGitHubUser(gitHubUser: GitHubUser): Single<List<RepositoryGitHubUser>> =
-        netWorkStatus.isConnectSingle()
-            .flatMap { isConnect ->
-                if (isConnect){
-                    remoteDataSourceGitHubUsers.callAPIRepositoriesGitHubUser(gitHubUser.reposUrl)
-                        .flatMap { repositoriesGitHubUser ->
-                            Single.fromCallable {
-                                repositoriesGitHubUserCache.saveToCache(
-                                    gitHubUser,
-                                    repositoriesGitHubUser
-                                )
-                                    .subscribeBy(
-                                        onError = {
-                                            it.printStackTrace()
-                                        }
-                                    )
-                                return@fromCallable repositoriesGitHubUser
-                            }
-                        }
-                } else {
-                    return@flatMap repositoriesGitHubUserCache.readFromCache(gitHubUser)
-                }
-            }
-            .subscribeOn(Schedulers.io())
-
-    override fun getDefaultGitHubUsers(): Observable<List<GitHubUser>> {
-        return Observable.intervalRange(0, 5, 0, 10, TimeUnit.MILLISECONDS)
-            .switchMap {
-                return@switchMap when (it) {
-                    0L -> Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
-                        .map { defaultGitHubUsersList ->
-                            listOf(defaultGitHubUsersList[0])
-                        }
-                        .delay(6L, TimeUnit.SECONDS)
-                    1L -> Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
-                        .map { defaultGitHubUsersList ->
-                            listOf(defaultGitHubUsersList[0], defaultGitHubUsersList[1])
-                        }
-                        .delay(5L, TimeUnit.SECONDS)
-                    2L -> Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
-                        .map { defaultGitHubUsersList ->
-                            listOf(
-                                defaultGitHubUsersList[0],
-                                defaultGitHubUsersList[1],
-                                defaultGitHubUsersList[2]
-                            )
-                        }
-                        .delay(4L, TimeUnit.SECONDS)
-                    3L -> Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
-                        .map { defaultGitHubUsersList ->
-                            listOf(
-                                defaultGitHubUsersList[0],
-                                defaultGitHubUsersList[1],
-                                defaultGitHubUsersList[2],
-                                defaultGitHubUsersList[3]
-                            )
-                        }
-                        .delay(3L, TimeUnit.SECONDS)
-                    4L -> Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
-                        .delay(2L, TimeUnit.SECONDS)
-                    else -> Observable.just(DEFAULT_GIT_HAB_USERS_LIST)
-                }
-            }
     }
 
     override fun loadGitHubImage(): Single<ResponseBody> =

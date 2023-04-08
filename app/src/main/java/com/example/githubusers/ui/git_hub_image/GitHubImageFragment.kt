@@ -22,7 +22,7 @@ class GitHubImageFragment : MvpAppCompatFragment(), IGitHubImageView {
 
     private val gitHubImagePresenter by moxyPresenter {
         GitHubImagePresenter(
-            GitHubUsersApp.instance.gitHubRepository, AndroidSchedulers.mainThread()
+            GitHubUsersApp.instance.gitHubImageRepository, AndroidSchedulers.mainThread()
         )
     }
     private var _binding: FragmentGitHubImageBinding? = null

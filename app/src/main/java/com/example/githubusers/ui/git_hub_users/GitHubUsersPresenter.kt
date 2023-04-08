@@ -2,7 +2,9 @@ package com.example.githubusers.ui.git_hub_users
 
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
-import com.example.githubusers.domain.repository.IGitHubRepository
+import com.example.githubusers.domain.repository.IGitHubImageRepository
+import com.example.githubusers.domain.repository.IGitHubUsersRepository
+import com.example.githubusers.domain.repository.IRepositoriesGitHubUserRepository
 import com.example.githubusers.navigation.IGitHubUsersScreens
 import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.IItemGitHubUsersPresenter
 import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.ItemGitHubUsersPresenterImpl
@@ -17,7 +19,9 @@ import javax.inject.Inject
 
 
 class GitHubUsersPresenter(
-    private val gitHubRepository: IGitHubRepository,
+    private val gitHubUsersRepository: IGitHubUsersRepository,
+    private val repositoriesGitHubUserRepository: IRepositoriesGitHubUserRepository,
+    private val gitHubImageRepository: IGitHubImageRepository,
     private val mainThreadScheduler: Scheduler
 ) : MvpPresenter<IGitHubUsersView>() {
 
@@ -29,7 +33,7 @@ class GitHubUsersPresenter(
 
     val itemGitHubUsersPresenter: IItemGitHubUsersPresenter = ItemGitHubUsersPresenterImpl()
     private lateinit var disposableDefaultGitHubUsers: Disposable
-    private val observableDefaultGitHubUsers = gitHubRepository.getDefaultGitHubUsers()
+    private val observableDefaultGitHubUsers = gitHubUsersRepository.getDefaultGitHubUsers()
 
     override fun onFirstViewAttach() {
         viewState.run {
@@ -41,7 +45,7 @@ class GitHubUsersPresenter(
     }
 
     fun subscribeToLoadingGitHubImage() {
-        gitHubRepository.loadGitHubImage()
+        gitHubImageRepository.loadGitHubImage()
             .observeOn(mainThreadScheduler)
             .subscribeBy(
                 onSuccess = {
@@ -54,7 +58,7 @@ class GitHubUsersPresenter(
     }
 
     private fun subscribeToSaveGitHubImageJpg(responseBodyGitHubImage: ResponseBody) {
-        gitHubRepository.saveGitHubImageJpg(responseBodyGitHubImage)
+        gitHubImageRepository.saveGitHubImageJpg(responseBodyGitHubImage)
             .subscribeOn(Schedulers.io())
             .observeOn(mainThreadScheduler)
             .subscribeBy(
@@ -78,7 +82,7 @@ class GitHubUsersPresenter(
 
     private fun subscribeToLoadingGitHubUsers() {
         viewState.showLoading()
-        gitHubRepository.getGitHubUsers()
+        gitHubUsersRepository.getGitHubUsers()
             .observeOn(mainThreadScheduler)
             .subscribeBy(
                 onSuccess = {
@@ -119,7 +123,7 @@ class GitHubUsersPresenter(
     }
 
     private fun subscribeToLoadingRepositoriesGitHubUser(gitHubUser: GitHubUser) {
-        gitHubRepository.getRepositoriesGitHubUser(gitHubUser)
+        repositoriesGitHubUserRepository.getRepositoriesGitHubUser(gitHubUser)
             .observeOn(mainThreadScheduler)
             .subscribeBy(
                 onSuccess = {

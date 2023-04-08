@@ -1,7 +1,7 @@
 package com.example.githubusers.ui.git_hub_image
 
 import android.graphics.Bitmap
-import com.example.githubusers.domain.repository.IGitHubRepository
+import com.example.githubusers.domain.repository.IGitHubImageRepository
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -10,7 +10,7 @@ import moxy.MvpPresenter
 import java.io.FileNotFoundException
 
 class GitHubImagePresenter(
-    private val gitHubRepository: IGitHubRepository,
+    private val gitHubImageRepository: IGitHubImageRepository,
     private val mainThreadScheduler: Scheduler
 ) :
     MvpPresenter<IGitHubImageView>() {
@@ -26,7 +26,7 @@ class GitHubImagePresenter(
 
     private fun subscribeToReadFileGitHubImage() {
         viewState.run {
-            gitHubRepository.readGitHubImage()
+            gitHubImageRepository.readGitHubImage()
                 .subscribeBy(
                     onSuccess = {
                         bitmapGitHubImage = it
@@ -57,7 +57,7 @@ class GitHubImagePresenter(
     }
 
     private fun subscribeToProgressSaveGitHubImagePng() {
-       compositeDisposable.add (gitHubRepository.getProgressSaveGitHubImagePng()
+       compositeDisposable.add (gitHubImageRepository.getProgressSaveGitHubImagePng()
            .observeOn(mainThreadScheduler)
            .subscribeBy(
                onNext = {
@@ -68,7 +68,7 @@ class GitHubImagePresenter(
 
     private fun subscribeToSaveGitHubImagePng(bitmapGitHubImage: Bitmap) {
         compositeDisposable.add(
-            gitHubRepository.saveGitHubImagePng(bitmapGitHubImage)
+            gitHubImageRepository.saveGitHubImagePng(bitmapGitHubImage)
                 .subscribeOn(Schedulers.io())
                 .observeOn(mainThreadScheduler)
                 .subscribeBy(
