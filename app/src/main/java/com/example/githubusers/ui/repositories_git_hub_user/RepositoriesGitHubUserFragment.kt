@@ -69,7 +69,6 @@ class RepositoriesGitHubUserFragment : MvpAppCompatFragment(), IRepositoriesGitH
                         ArrayList(repositoriesGitHubUser)
                     )
                 }
-                GitHubUsersApp.instance.appComponent.inject(this)
             }
     }
 

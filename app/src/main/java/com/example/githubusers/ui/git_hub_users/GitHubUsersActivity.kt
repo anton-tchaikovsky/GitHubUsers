@@ -34,9 +34,6 @@ class GitHubUsersActivity : MvpAppCompatActivity(), IGitHubUsersView {
     private lateinit var binding: ActivityGitHubUsersBinding
     private val gitHubUsersPresenter by moxyPresenter {
         GitHubUsersPresenter(
-            GitHubUsersApp.instance.gitHubUsersRepository,
-            GitHubUsersApp.instance.repositoriesGitHubUserRepository,
-            GitHubUsersApp.instance.gitHubImageRepository,
             AndroidSchedulers.mainThread()
         ).apply {
             GitHubUsersApp.instance.appComponent.inject(this)

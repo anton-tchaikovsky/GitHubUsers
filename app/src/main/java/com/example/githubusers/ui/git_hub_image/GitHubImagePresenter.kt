@@ -8,12 +8,15 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
 import java.io.FileNotFoundException
+import javax.inject.Inject
 
 class GitHubImagePresenter(
-    private val gitHubImageRepository: IGitHubImageRepository,
     private val mainThreadScheduler: Scheduler
 ) :
     MvpPresenter<IGitHubImageView>() {
+
+    @Inject
+    lateinit var gitHubImageRepository: IGitHubImageRepository
 
     private var bitmapGitHubImage: Bitmap? = null
     private val compositeDisposable = CompositeDisposable()

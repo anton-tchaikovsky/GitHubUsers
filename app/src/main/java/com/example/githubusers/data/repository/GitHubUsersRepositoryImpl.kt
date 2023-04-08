@@ -1,5 +1,6 @@
 package com.example.githubusers.data.repository
 
+import com.example.githubusers.GitHubUsersApp
 import com.example.githubusers.data.api.RemoteDataSourceGitHubUsers
 import com.example.githubusers.data.repository.cache.GitHubUsersCache
 import com.example.githubusers.domain.dto.GitHubUser
@@ -12,9 +13,16 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class GitHubUsersRepositoryImpl(private val netWorkStatus: INetWorkStatus) : IGitHubUsersRepository {
+class GitHubUsersRepositoryImpl: IGitHubUsersRepository {
 
+    init {
+        GitHubUsersApp.instance.appComponent.inject(this)
+    }
+
+    @Inject
+    lateinit var netWorkStatus: INetWorkStatus
 
     private val remoteDataSourceGitHubUsers: RemoteDataSourceGitHubUsers by lazy {
         RemoteDataSourceGitHubUsers()

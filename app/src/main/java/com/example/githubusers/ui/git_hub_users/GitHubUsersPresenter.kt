@@ -19,21 +19,26 @@ import javax.inject.Inject
 
 
 class GitHubUsersPresenter(
-    private val gitHubUsersRepository: IGitHubUsersRepository,
-    private val repositoriesGitHubUserRepository: IRepositoriesGitHubUserRepository,
-    private val gitHubImageRepository: IGitHubImageRepository,
     private val mainThreadScheduler: Scheduler
 ) : MvpPresenter<IGitHubUsersView>() {
+
+    @Inject
+    lateinit var gitHubUsersRepository: IGitHubUsersRepository
+
+    @Inject
+    lateinit var repositoriesGitHubUserRepository: IRepositoriesGitHubUserRepository
+
+    @Inject
+    lateinit var gitHubImageRepository: IGitHubImageRepository
 
     @Inject
     lateinit var router: Router
 
     @Inject
-    lateinit var gitHubUsersAppScreens:IGitHubUsersScreens
+    lateinit var gitHubUsersAppScreens: IGitHubUsersScreens
 
     val itemGitHubUsersPresenter: IItemGitHubUsersPresenter = ItemGitHubUsersPresenterImpl()
     private lateinit var disposableDefaultGitHubUsers: Disposable
-    private val observableDefaultGitHubUsers = gitHubUsersRepository.getDefaultGitHubUsers()
 
     override fun onFirstViewAttach() {
         viewState.run {
@@ -68,7 +73,7 @@ class GitHubUsersPresenter(
 
     private fun subscribeToDefaultGitHubUsers() {
         viewState.showLoading()
-        disposableDefaultGitHubUsers = observableDefaultGitHubUsers
+        disposableDefaultGitHubUsers = gitHubUsersRepository.getDefaultGitHubUsers()
             .observeOn(mainThreadScheduler)
             .subscribeBy(
                 onNext = { gitHubUsers ->
