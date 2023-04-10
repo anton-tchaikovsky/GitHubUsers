@@ -2,14 +2,11 @@ package com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubusers.databinding.ItemGitHubUsersRecycleViewBinding
-import com.example.githubusers.ui.image.IImageLoader
 
 class GitHubUsersAdapter(
-    private val itemGitHubUsersPresenter: IItemGitHubUsersPresenter,
-    private val imageLoader: IImageLoader<AppCompatImageView>
+    private val itemGitHubUsersPresenter: IItemGitHubUsersPresenter
 ) : RecyclerView.Adapter<ItemGitHubUsersViewHolder>() {
 
     init {
@@ -22,7 +19,7 @@ class GitHubUsersAdapter(
             parent,
             false
         )
-        return ItemGitHubUsersViewHolder(binding, imageLoader)
+        return ItemGitHubUsersViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ItemGitHubUsersViewHolder, position: Int) {

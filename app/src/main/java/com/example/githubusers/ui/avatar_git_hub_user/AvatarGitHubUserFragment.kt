@@ -5,21 +5,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
+import com.example.githubusers.GitHubUsersApp
 import com.example.githubusers.databinding.FragmentAvatarGitHubUserBinding
-import com.example.githubusers.ui.image.GlideImageLoader
+import com.example.githubusers.ui.image.IImageLoader
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 @Suppress("unused")
 class AvatarGitHubUserFragment : MvpAppCompatFragment(), IAvatarGitHubUserView {
 
+    @Inject
+    lateinit var imageLoader:IImageLoader<AppCompatImageView>
+
     private val avatarGitHubUserPresenter by moxyPresenter { AvatarGitHubUserPresenter()}
+
     private var _binding: FragmentAvatarGitHubUserBinding? = null
     private val binding get() = _binding!!
-    private var imageLoader = GlideImageLoader()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        GitHubUsersApp.instance.appComponent.inject(this)
         arguments?.let {
             avatarGitHubUserPresenter.apply {
                 login = it.getString(KEY_LOGIN)

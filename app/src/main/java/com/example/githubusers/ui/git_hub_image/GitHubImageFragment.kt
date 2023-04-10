@@ -7,17 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
 import com.example.githubusers.GitHubUsersApp
 import com.example.githubusers.R
 import com.example.githubusers.databinding.FragmentGitHubImageBinding
-import com.example.githubusers.ui.image.GlideImageLoader
+import com.example.githubusers.ui.image.IImageLoader
 import com.example.githubusers.utils.DURATION_SAVE_GIT_HUB_IMAGE_PNG
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 @Suppress("unused")
 class GitHubImageFragment : MvpAppCompatFragment(), IGitHubImageView {
+
+    @Inject
+    lateinit var imageLoader: IImageLoader<AppCompatImageView>
 
     private val gitHubImagePresenter by moxyPresenter {
         GitHubImagePresenter().apply {
@@ -26,8 +31,6 @@ class GitHubImageFragment : MvpAppCompatFragment(), IGitHubImageView {
     }
     private var _binding: FragmentGitHubImageBinding? = null
     private val binding get() = _binding!!
-
-    private val imageLoader = GlideImageLoader()
 
     private val progressIndicator: LinearProgressIndicator by lazy {
         LinearProgressIndicator(requireContext()).apply {
@@ -49,8 +52,12 @@ class GitHubImageFragment : MvpAppCompatFragment(), IGitHubImageView {
             .create()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        GitHubUsersApp.instance.appComponent.inject(this)
+    }
 
-    override fun onCreateView(
+            override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {

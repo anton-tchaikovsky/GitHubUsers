@@ -16,7 +16,6 @@ import com.example.githubusers.GitHubUsersApp
 import com.example.githubusers.R
 import com.example.githubusers.databinding.ActivityGitHubUsersBinding
 import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.GitHubUsersAdapter
-import com.example.githubusers.ui.image.GlideImageLoader
 import com.example.githubusers.utils.DURATION_FADE_IN
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.NavigatorHolder
@@ -37,10 +36,7 @@ class GitHubUsersActivity : MvpAppCompatActivity(), IGitHubUsersView {
         }
     }
     private val gitHubUsersAdapter by lazy {
-        GitHubUsersAdapter(
-            gitHubUsersPresenter.itemGitHubUsersPresenter,
-            GlideImageLoader()
-        )
+        GitHubUsersAdapter(gitHubUsersPresenter.itemGitHubUsersPresenter)
     }
     private val navigator: Navigator = AppNavigator(this, R.id.git_hub_users_container)
 
