@@ -21,7 +21,6 @@ import com.example.githubusers.utils.DURATION_FADE_IN
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.androidx.AppNavigator
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
@@ -33,9 +32,7 @@ class GitHubUsersActivity : MvpAppCompatActivity(), IGitHubUsersView {
 
     private lateinit var binding: ActivityGitHubUsersBinding
     private val gitHubUsersPresenter by moxyPresenter {
-        GitHubUsersPresenter(
-            AndroidSchedulers.mainThread()
-        ).apply {
+        GitHubUsersPresenter().apply {
             GitHubUsersApp.instance.appComponent.inject(this)
         }
     }

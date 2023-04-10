@@ -2,7 +2,6 @@ package com.example.githubusers.data.repository
 
 import com.example.githubusers.GitHubUsersApp
 import com.example.githubusers.data.api.RemoteDataSourceGitHubUsers
-import com.example.githubusers.data.repository.cache.RepositoriesGitHubUserCache
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
 import com.example.githubusers.domain.repository.IRepositoriesGitHubUserRepository
@@ -22,13 +21,11 @@ class RepositoriesGitHubUserRepositoryImpl: IRepositoriesGitHubUserRepository {
     @Inject
     lateinit var netWorkStatus: INetWorkStatus
 
-    private val remoteDataSourceGitHubUsers: RemoteDataSourceGitHubUsers by lazy {
-        RemoteDataSourceGitHubUsers()
-    }
+    @Inject
+    lateinit var remoteDataSourceGitHubUsers: RemoteDataSourceGitHubUsers
 
-    private val repositoriesGitHubUserCache: IRepositoriesGitHubUserCache by lazy {
-        RepositoriesGitHubUserCache()
-    }
+    @Inject
+    lateinit var repositoriesGitHubUserCache: IRepositoriesGitHubUserCache
 
     override fun getRepositoriesGitHubUser(gitHubUser: GitHubUser): Single<List<RepositoryGitHubUser>> =
         netWorkStatus.isConnectSingle()

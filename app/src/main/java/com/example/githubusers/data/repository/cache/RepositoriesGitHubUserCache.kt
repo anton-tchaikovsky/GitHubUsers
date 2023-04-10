@@ -10,9 +10,7 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import java.io.IOException
 
-class RepositoriesGitHubUserCache : IRepositoriesGitHubUserCache {
-    private val databaseGitHubUsers: DatabaseGitHubUsers
-        get() = DatabaseGitHubUsers.getInstanceDatabase()
+class RepositoriesGitHubUserCache (private val databaseGitHubUsers: DatabaseGitHubUsers): IRepositoriesGitHubUserCache {
 
     override fun saveToCache(
         gitHubUser: GitHubUser,

@@ -8,9 +8,7 @@ import com.example.githubusers.utils.mapFromRoomGitHubUsersToGitHubUsers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
-class GitHubUsersCache: IGitHubUsersCache {
-    private val databaseGitHubUsers: DatabaseGitHubUsers
-        get() = DatabaseGitHubUsers.getInstanceDatabase()
+class GitHubUsersCache(private val databaseGitHubUsers: DatabaseGitHubUsers): IGitHubUsersCache {
 
     override fun saveToCache(gitHubUsers: List<GitHubUser>): Completable =
         Completable.fromAction {

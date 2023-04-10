@@ -10,13 +10,14 @@ import moxy.MvpPresenter
 import java.io.FileNotFoundException
 import javax.inject.Inject
 
-class GitHubImagePresenter(
-    private val mainThreadScheduler: Scheduler
-) :
+class GitHubImagePresenter:
     MvpPresenter<IGitHubImageView>() {
 
     @Inject
     lateinit var gitHubImageRepository: IGitHubImageRepository
+
+    @Inject
+    lateinit var mainThreadScheduler:Scheduler
 
     private var bitmapGitHubImage: Bitmap? = null
     private val compositeDisposable = CompositeDisposable()

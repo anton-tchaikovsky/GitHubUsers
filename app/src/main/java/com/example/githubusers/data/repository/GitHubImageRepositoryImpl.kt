@@ -3,6 +3,7 @@ package com.example.githubusers.data.repository
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Environment
+import com.example.githubusers.GitHubUsersApp
 import com.example.githubusers.data.api.RemoteDataSourceGitHubImage
 import com.example.githubusers.domain.repository.IGitHubImageRepository
 import com.example.githubusers.utils.DURATION_SAVE_GIT_HUB_IMAGE_PNG
@@ -15,18 +16,22 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 class GitHubImageRepositoryImpl:
     IGitHubImageRepository {
+
+    init {
+        GitHubUsersApp.instance.appComponent.inject(this)
+    }
 
     private val path: File = Environment.getExternalStorageDirectory()
     private val fileJpg = File(path, GIT_HUB_IMAGE_JPG)
     private val filePng = File(path, GIT_HUB_IMAGE_PNG)
     private val qualityCompressToPng = 100
 
-    private val remoteDataSourceGitHubImage: RemoteDataSourceGitHubImage by lazy {
-        RemoteDataSourceGitHubImage()
-    }
+    @Inject
+    lateinit var remoteDataSourceGitHubImage: RemoteDataSourceGitHubImage
 
     override fun loadGitHubImage(): Single<ResponseBody> =
         remoteDataSourceGitHubImage.callAPIGitHubImage()

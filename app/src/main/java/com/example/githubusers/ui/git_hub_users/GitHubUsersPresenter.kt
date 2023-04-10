@@ -18,9 +18,7 @@ import okhttp3.ResponseBody
 import javax.inject.Inject
 
 
-class GitHubUsersPresenter(
-    private val mainThreadScheduler: Scheduler
-) : MvpPresenter<IGitHubUsersView>() {
+class GitHubUsersPresenter: MvpPresenter<IGitHubUsersView>() {
 
     @Inject
     lateinit var gitHubUsersRepository: IGitHubUsersRepository
@@ -36,6 +34,9 @@ class GitHubUsersPresenter(
 
     @Inject
     lateinit var gitHubUsersAppScreens: IGitHubUsersScreens
+
+    @Inject
+    lateinit var mainThreadScheduler:Scheduler
 
     val itemGitHubUsersPresenter: IItemGitHubUsersPresenter = ItemGitHubUsersPresenterImpl()
     private lateinit var disposableDefaultGitHubUsers: Disposable

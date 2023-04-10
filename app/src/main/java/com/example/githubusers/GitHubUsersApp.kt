@@ -1,7 +1,6 @@
 package com.example.githubusers
 
 import android.app.Application
-import com.example.githubusers.data.room.DatabaseGitHubUsers
 import com.example.githubusers.di.AppComponent
 import com.example.githubusers.di.DaggerAppComponent
 import com.example.githubusers.di.modules.AppModule
@@ -17,8 +16,6 @@ class GitHubUsersApp : Application() {
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule(this))
             .build()
-
-        DatabaseGitHubUsers.createInstanceDatabase(this)
     }
 
     companion object{

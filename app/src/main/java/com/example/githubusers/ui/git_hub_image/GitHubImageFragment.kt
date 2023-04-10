@@ -13,7 +13,6 @@ import com.example.githubusers.databinding.FragmentGitHubImageBinding
 import com.example.githubusers.ui.image.GlideImageLoader
 import com.example.githubusers.utils.DURATION_SAVE_GIT_HUB_IMAGE_PNG
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -21,9 +20,7 @@ import moxy.ktx.moxyPresenter
 class GitHubImageFragment : MvpAppCompatFragment(), IGitHubImageView {
 
     private val gitHubImagePresenter by moxyPresenter {
-        GitHubImagePresenter(
-           AndroidSchedulers.mainThread()
-        ).apply {
+        GitHubImagePresenter().apply {
             GitHubUsersApp.instance.appComponent.inject(this)
         }
     }
