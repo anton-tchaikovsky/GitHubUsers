@@ -1,7 +1,8 @@
 package com.example.githubusers.ui.git_hub_image
 
 import android.graphics.Bitmap
-import com.example.githubusers.domain.repository.IGitHubImageRepository
+import com.example.githubusers.di.modules.git_hub_image.IGitHubImageScopeContainer
+import com.example.githubusers.domain.repository.git_hub_image.IGitHubImageRepository
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
@@ -18,6 +19,9 @@ class GitHubImagePresenter:
 
     @Inject
     lateinit var mainThreadScheduler:Scheduler
+
+    @Inject
+    lateinit var gitHubImageScopeContainer: IGitHubImageScopeContainer
 
     private var bitmapGitHubImage: Bitmap? = null
     private val compositeDisposable = CompositeDisposable()
@@ -104,6 +108,11 @@ class GitHubImagePresenter:
 
     fun onContinueSavePng() {
         viewState.dismissAlertDialog()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        gitHubImageScopeContainer.releaseGitHubImageScope()
     }
 
     companion object{

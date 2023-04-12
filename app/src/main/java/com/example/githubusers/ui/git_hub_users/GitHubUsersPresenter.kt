@@ -2,9 +2,9 @@ package com.example.githubusers.ui.git_hub_users
 
 import com.example.githubusers.domain.dto.GitHubUser
 import com.example.githubusers.domain.dto.RepositoryGitHubUser
-import com.example.githubusers.domain.repository.IGitHubImageRepository
 import com.example.githubusers.domain.repository.IGitHubUsersRepository
 import com.example.githubusers.domain.repository.IRepositoriesGitHubUserRepository
+import com.example.githubusers.domain.repository.git_hub_image.IGitHubImageLoaderRepository
 import com.example.githubusers.navigation.IGitHubUsersScreens
 import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.IItemGitHubUsersPresenter
 import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.ItemGitHubUsersPresenterImpl
@@ -27,7 +27,7 @@ class GitHubUsersPresenter: MvpPresenter<IGitHubUsersView>() {
     lateinit var repositoriesGitHubUserRepository: IRepositoriesGitHubUserRepository
 
     @Inject
-    lateinit var gitHubImageRepository: IGitHubImageRepository
+    lateinit var gitHubImageLoaderRepository: IGitHubImageLoaderRepository
 
     @Inject
     lateinit var router: Router
@@ -51,7 +51,7 @@ class GitHubUsersPresenter: MvpPresenter<IGitHubUsersView>() {
     }
 
     fun subscribeToLoadingGitHubImage() {
-        gitHubImageRepository.loadGitHubImage()
+        gitHubImageLoaderRepository.loadGitHubImage()
             .observeOn(mainThreadScheduler)
             .subscribeBy(
                 onSuccess = {
@@ -64,7 +64,7 @@ class GitHubUsersPresenter: MvpPresenter<IGitHubUsersView>() {
     }
 
     private fun subscribeToSaveGitHubImageJpg(responseBodyGitHubImage: ResponseBody) {
-        gitHubImageRepository.saveGitHubImageJpg(responseBodyGitHubImage)
+        gitHubImageLoaderRepository.saveGitHubImageJpg(responseBodyGitHubImage)
             .subscribeOn(Schedulers.io())
             .observeOn(mainThreadScheduler)
             .subscribeBy(

@@ -26,7 +26,7 @@ class GitHubImageFragment : MvpAppCompatFragment(), IGitHubImageView {
 
     private val gitHubImagePresenter by moxyPresenter {
         GitHubImagePresenter().apply {
-            GitHubUsersApp.instance.appComponent.inject(this)
+            GitHubUsersApp.instance.initGitHubImageSubcomponent().inject(this)
         }
     }
     private var _binding: FragmentGitHubImageBinding? = null
