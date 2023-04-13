@@ -1,7 +1,7 @@
-package com.example.githubusers.di.modules.git_hub_image.module
+package com.example.githubusers.di.git_hub_image.modules
 
 import com.example.githubusers.data.repository.storage_directory.ImageStorageDirectory
-import com.example.githubusers.di.modules.git_hub_image.GitHubImageScope
+import com.example.githubusers.di.git_hub_image.GitHubImageScope
 import com.example.githubusers.domain.repository.storage_directory.IImageStorageDirectory
 import dagger.Module
 import dagger.Provides

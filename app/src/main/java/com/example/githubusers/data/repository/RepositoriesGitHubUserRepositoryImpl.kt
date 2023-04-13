@@ -15,7 +15,7 @@ import javax.inject.Inject
 class RepositoriesGitHubUserRepositoryImpl: IRepositoriesGitHubUserRepository {
 
     init {
-        GitHubUsersApp.instance.appComponent.inject(this)
+        GitHubUsersApp.instance.initRepositoriesGitHubUserSubcomponent().inject(this)
     }
 
     @Inject

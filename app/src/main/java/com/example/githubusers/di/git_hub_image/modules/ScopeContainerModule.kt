@@ -1,8 +1,8 @@
-package com.example.githubusers.di.modules.git_hub_image.module
+package com.example.githubusers.di.git_hub_image.modules
 
 import com.example.githubusers.GitHubUsersApp
-import com.example.githubusers.di.modules.git_hub_image.GitHubImageScope
-import com.example.githubusers.di.modules.git_hub_image.IGitHubImageScopeContainer
+import com.example.githubusers.di.git_hub_image.GitHubImageScope
+import com.example.githubusers.di.git_hub_image.IGitHubImageScopeContainer
 import dagger.Module
 import dagger.Provides
 

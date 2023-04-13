@@ -1,9 +1,7 @@
 package com.example.githubusers.ui.git_hub_users
 
 import com.example.githubusers.domain.dto.GitHubUser
-import com.example.githubusers.domain.dto.RepositoryGitHubUser
 import com.example.githubusers.domain.repository.IGitHubUsersRepository
-import com.example.githubusers.domain.repository.IRepositoriesGitHubUserRepository
 import com.example.githubusers.domain.repository.git_hub_image.IGitHubImageLoaderRepository
 import com.example.githubusers.navigation.IGitHubUsersScreens
 import com.example.githubusers.ui.git_hub_users.git_nub_users_recycle_view.IItemGitHubUsersPresenter
@@ -22,9 +20,6 @@ class GitHubUsersPresenter: MvpPresenter<IGitHubUsersView>() {
 
     @Inject
     lateinit var gitHubUsersRepository: IGitHubUsersRepository
-
-    @Inject
-    lateinit var repositoriesGitHubUserRepository: IRepositoriesGitHubUserRepository
 
     @Inject
     lateinit var gitHubImageLoaderRepository: IGitHubImageLoaderRepository
@@ -124,21 +119,8 @@ class GitHubUsersPresenter: MvpPresenter<IGitHubUsersView>() {
         }
 
         itemGitHubUsersPresenter.openRepositoriesButtonClickListener = {
-                subscribeToLoadingRepositoriesGitHubUser(itemGitHubUsersPresenter.entityList[it.itemPosition!!])
+            openRepositoriesGitHubUserFragment(itemGitHubUsersPresenter.entityList[it.itemPosition!!])
         }
-    }
-
-    private fun subscribeToLoadingRepositoriesGitHubUser(gitHubUser: GitHubUser) {
-        repositoriesGitHubUserRepository.getRepositoriesGitHubUser(gitHubUser)
-            .observeOn(mainThreadScheduler)
-            .subscribeBy(
-                onSuccess = {
-                    openRepositoriesGitHubUserFragment(gitHubUser, it)
-                },
-                onError = {
-                    viewState.showError(it)
-                }
-            )
     }
 
     fun onRequestGitHubUsers() {
@@ -159,8 +141,8 @@ class GitHubUsersPresenter: MvpPresenter<IGitHubUsersView>() {
         router.navigateTo(gitHubUsersAppScreens.avatarGitHubUserScreen(login, avatarUrl))
     }
 
-    private fun openRepositoriesGitHubUserFragment(gitHubUser:GitHubUser, repositoriesGitHubUser:List<RepositoryGitHubUser>) {
-        router.navigateTo(gitHubUsersAppScreens.repositoriesGitHubUserScreen(gitHubUser, repositoriesGitHubUser))
+    private fun openRepositoriesGitHubUserFragment(gitHubUser:GitHubUser) {
+        router.navigateTo(gitHubUsersAppScreens.repositoriesGitHubUserScreen(gitHubUser))
     }
 
     private fun onOpenGitHubImageFragment() {

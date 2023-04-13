@@ -1,12 +1,10 @@
-package com.example.githubusers.di.modules
+package com.example.githubusers.di.git_hub_app.modules
 
 import androidx.room.Room
 import com.example.githubusers.GitHubUsersApp
 import com.example.githubusers.data.repository.cache.GitHubUsersCache
-import com.example.githubusers.data.repository.cache.RepositoriesGitHubUserCache
 import com.example.githubusers.data.room.DatabaseGitHubUsers
 import com.example.githubusers.domain.repository.cache.IGitHubUsersCache
-import com.example.githubusers.domain.repository.cache.IRepositoriesGitHubUserCache
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -18,11 +16,6 @@ class DatabaseModule {
     @Provides
     fun gitHubUsersCache(databaseGitHubUsers: DatabaseGitHubUsers): IGitHubUsersCache =
         GitHubUsersCache(databaseGitHubUsers)
-
-    @Singleton
-    @Provides
-    fun repositoriesGitHubUserCache(databaseGitHubUsers: DatabaseGitHubUsers): IRepositoriesGitHubUserCache =
-        RepositoriesGitHubUserCache(databaseGitHubUsers)
 
     @Singleton
     @Provides

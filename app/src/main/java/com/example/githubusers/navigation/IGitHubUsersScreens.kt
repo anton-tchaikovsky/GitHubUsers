@@ -7,8 +7,5 @@ import com.github.terrakok.cicerone.Screen
 interface IGitHubUsersScreens {
     fun avatarGitHubUserScreen(login: String, avatarUrl: String): Screen
     fun gitHubImageScreen(): Screen
-    fun repositoriesGitHubUserScreen(
-        gitHubUser: GitHubUser,
-        repositoriesGitHubUser: List<RepositoryGitHubUser>
-    ): Screen
+    fun repositoriesGitHubUserScreen(gitHubUser: GitHubUser): Screen
 }

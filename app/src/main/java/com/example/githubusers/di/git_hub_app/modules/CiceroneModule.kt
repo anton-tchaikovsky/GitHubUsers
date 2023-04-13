@@ -1,4 +1,4 @@
-package com.example.githubusers.di.modules
+package com.example.githubusers.di.git_hub_app.modules
 
 import com.example.githubusers.navigation.GitHubUsersScreensImpl
 import com.example.githubusers.navigation.IGitHubUsersScreens

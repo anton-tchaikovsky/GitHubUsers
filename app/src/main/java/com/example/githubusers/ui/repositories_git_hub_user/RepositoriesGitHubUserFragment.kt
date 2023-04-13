@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.githubusers.GitHubUsersApp
 import com.example.githubusers.databinding.FragmentRepositoriesGitHubUserBinding
 import com.example.githubusers.domain.dto.GitHubUser
-import com.example.githubusers.domain.dto.RepositoryGitHubUser
 import com.example.githubusers.ui.repositories_git_hub_user.repositories_git_hub_user_recycle_view.RepositoriesGitHubUserAdapter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -19,7 +19,7 @@ class RepositoriesGitHubUserFragment : MvpAppCompatFragment(), IRepositoriesGitH
 
     private val repositoriesGitHubUserPresenter by moxyPresenter {
         RepositoriesGitHubUserPresenter().apply {
-            GitHubUsersApp.instance.appComponent.inject(this)
+            GitHubUsersApp.instance.initRepositoriesGitHubUserSubcomponent().inject(this)
         }
     }
     private val repositoriesGitHubUserAdapter by lazy {
@@ -32,14 +32,9 @@ class RepositoriesGitHubUserFragment : MvpAppCompatFragment(), IRepositoriesGitH
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         arguments?.let {
             repositoriesGitHubUserPresenter.run {
                 gitHubUser = it.getParcelable(KEY_GIT_HUB_USER)
-                it.getParcelableArrayList<RepositoryGitHubUser>(KEY_REPOSITORIES_GIT_HUB_USER)
-                    ?.let {
-                        repositoriesGitHubUser = it.toList()
-                    }
             }
         }
     }
@@ -55,19 +50,11 @@ class RepositoriesGitHubUserFragment : MvpAppCompatFragment(), IRepositoriesGitH
     companion object {
 
         private const val KEY_GIT_HUB_USER = "KeyGitHubUser"
-        private const val KEY_REPOSITORIES_GIT_HUB_USER = "KeyRepositoriesGitHubUser"
 
-        fun newInstance(
-            gitHubUser: GitHubUser,
-            repositoriesGitHubUser: List<RepositoryGitHubUser>
-        ) =
+        fun newInstance(gitHubUser: GitHubUser) =
             RepositoriesGitHubUserFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(KEY_GIT_HUB_USER, gitHubUser)
-                    putParcelableArrayList(
-                        KEY_REPOSITORIES_GIT_HUB_USER,
-                        ArrayList(repositoriesGitHubUser)
-                    )
                 }
             }
     }
@@ -91,6 +78,10 @@ class RepositoriesGitHubUserFragment : MvpAppCompatFragment(), IRepositoriesGitH
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             adapter = repositoriesGitHubUserAdapter
         }
+    }
+
+    override fun showError(error: Throwable) {
+        Toast.makeText(requireContext(), error.message.toString(), Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroyView() {

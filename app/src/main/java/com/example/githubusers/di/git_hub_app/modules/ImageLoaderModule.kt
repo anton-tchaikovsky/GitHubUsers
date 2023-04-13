@@ -1,4 +1,4 @@
-package com.example.githubusers.di.modules
+package com.example.githubusers.di.git_hub_app.modules
 
 import androidx.appcompat.widget.AppCompatImageView
 import com.example.githubusers.ui.image.GlideImageLoader

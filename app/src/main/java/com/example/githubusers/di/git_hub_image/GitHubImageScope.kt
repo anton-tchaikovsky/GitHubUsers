@@ -1,4 +1,4 @@
-package com.example.githubusers.di.modules.git_hub_image
+package com.example.githubusers.di.git_hub_image
 
 import javax.inject.Scope
 

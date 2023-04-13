@@ -1,7 +1,7 @@
 package com.example.githubusers.ui.git_hub_image
 
 import android.graphics.Bitmap
-import com.example.githubusers.di.modules.git_hub_image.IGitHubImageScopeContainer
+import com.example.githubusers.di.git_hub_image.IGitHubImageScopeContainer
 import com.example.githubusers.domain.repository.git_hub_image.IGitHubImageRepository
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.CompositeDisposable

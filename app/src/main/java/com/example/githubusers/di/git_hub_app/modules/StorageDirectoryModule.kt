@@ -1,4 +1,4 @@
-package com.example.githubusers.di.modules
+package com.example.githubusers.di.git_hub_app.modules
 
 import android.os.Environment
 import com.example.githubusers.data.repository.storage_directory.ImageLoaderStorageDirectory
