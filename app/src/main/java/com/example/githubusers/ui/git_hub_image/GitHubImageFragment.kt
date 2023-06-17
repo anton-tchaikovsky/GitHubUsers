@@ -57,7 +57,7 @@ class GitHubImageFragment : MvpAppCompatFragment(), IGitHubImageView {
         GitHubUsersApp.instance.appComponent.inject(this)
     }
 
-            override fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
@@ -66,8 +66,8 @@ class GitHubImageFragment : MvpAppCompatFragment(), IGitHubImageView {
     }
 
     companion object {
-        const val MESSAGE_FOR_SAVED_SUCCESSFULLY= "The file was saved successfully"
-        const val MESSAGE_PROCESS_OF_SAVING_IN_PNG= "File in the process of saving in png"
+        const val MESSAGE_FOR_SAVED_SUCCESSFULLY = "The file was saved successfully"
+        const val MESSAGE_PROCESS_OF_SAVING_IN_PNG = "File in the process of saving in png"
 
         fun newInstance() =
             GitHubImageFragment()
