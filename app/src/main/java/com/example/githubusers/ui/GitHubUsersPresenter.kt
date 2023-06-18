@@ -5,9 +5,9 @@ import com.example.githubusers.domain.repository.GitHubUsersRepository
 
 class GitHubUsersPresenter (private val gitHubUsersRepository: GitHubUsersRepository) : GitHubUsersContract.GitHubUsersPresenter {
 
-    private var gitHubUsersView: GitHubUsersContract.GitHubUsersView? = null
-    private var gitHubUsersList: List<GitHubUser>? = null
-    private var isShowLoading: Boolean? = null
+    internal var gitHubUsersView: GitHubUsersContract.GitHubUsersView? = null
+    internal var gitHubUsersList: List<GitHubUser>? = null
+    internal var isShowLoading: Boolean? = null
 
     override fun attach(gitHubUsersView: GitHubUsersContract.GitHubUsersView) {
         this.gitHubUsersView = gitHubUsersView
@@ -36,21 +36,29 @@ class GitHubUsersPresenter (private val gitHubUsersRepository: GitHubUsersReposi
             }
             gitHubUsersRepository.getGitHubUsers(
                 onSuccess = {
-                    isShowLoading = false.also { isShowLoading ->
-                        showLoading(isShowLoading)
-                    }
-                    gitHubUsersList = it.also { gitHubUsersList ->
-                        showGitHubUsers(gitHubUsersList)
-                    }
+                    onSuccessLoadingGitHubUsers(it)
                 },
                 onError = {
-                    isShowLoading = false.also { isShowLoading ->
-                        showLoading(isShowLoading)
-                    }
-                    showError(it)
+                   onErrorLoadingGitHubUsers(it)
                 }
             )
         }
+    }
+
+    internal fun onSuccessLoadingGitHubUsers(gitHubUsersList: List<GitHubUser>){
+        isShowLoading = false.also { isShowLoading ->
+            gitHubUsersView?.showLoading(isShowLoading)
+        }
+        this.gitHubUsersList = gitHubUsersList.also {
+            gitHubUsersView?.showGitHubUsers(it)
+        }
+    }
+
+    internal fun onErrorLoadingGitHubUsers(error: Throwable){
+        isShowLoading = false.also { isShowLoading ->
+            gitHubUsersView?.showLoading(isShowLoading)
+        }
+        gitHubUsersView?.showError(error)
     }
 }
 
